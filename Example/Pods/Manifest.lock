@@ -1,0 +1,16 @@
+PODS:
+  - PALExtension (0.1.0)
+
+DEPENDENCIES:
+  - PALExtension (from `../`)
+
+EXTERNAL SOURCES:
+  PALExtension:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  PALExtension: 86d8a19cef49b23ace5a9e2f03488a5aaba908d7
+
+PODFILE CHECKSUM: 63488bf9fbcadac7a0a92cbf0ad25d6dc3f829d9
+
+COCOAPODS: 1.10.0

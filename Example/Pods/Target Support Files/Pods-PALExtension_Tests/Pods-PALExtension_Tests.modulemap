@@ -1,0 +1,6 @@
+framework module Pods_PALExtension_Tests {
+  umbrella header "Pods-PALExtension_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
