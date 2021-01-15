@@ -22,7 +22,6 @@ import UIKit
 
 public extension UIWindow {
     var currentViewController: UIViewController? {
-        print("self.rootViewController: \(self.rootViewController)")
         return self.currentViewController(viewController: self.rootViewController)
     }
 
