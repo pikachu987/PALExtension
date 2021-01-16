@@ -42,6 +42,7 @@
 		1866D0A425B1CCD100921674 /* Notification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D09925B1CCD100921674 /* Notification+.swift */; };
 		1866D0A525B1CCD100921674 /* NSMutableAttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D09A25B1CCD100921674 /* NSMutableAttributedString+.swift */; };
 		1866D0CD25B2922900921674 /* UIView+ProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D0CC25B2922900921674 /* UIView+ProgressIndicatorView.swift */; };
+		1866D0E825B31F2600921674 /* NSLayoutConstraint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D0E725B31F2600921674 /* NSLayoutConstraint+.swift */; };
 		18812BF547885C5D2B9601A11ECC71DD /* Pods-PALExtension_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F78B493F900BCB7DCB54AAC7E5124A7F /* Pods-PALExtension_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		29EE142E0604238E4C8099E273F659B1 /* Pods-PALExtension_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CD89E0D42CEBEFB438160964BB74CE20 /* Pods-PALExtension_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DB5AC3F87CA3373BEF3A5D57C058A64 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
@@ -105,6 +106,7 @@
 		1866D09925B1CCD100921674 /* Notification+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+.swift"; sourceTree = "<group>"; };
 		1866D09A25B1CCD100921674 /* NSMutableAttributedString+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+.swift"; sourceTree = "<group>"; };
 		1866D0CC25B2922900921674 /* UIView+ProgressIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ProgressIndicatorView.swift"; sourceTree = "<group>"; };
+		1866D0E725B31F2600921674 /* NSLayoutConstraint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+.swift"; sourceTree = "<group>"; };
 		1D7E955F32C701E8F380ADCAA3E987B0 /* PALExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PALExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		319C574A93442D327CA099B86C78F811 /* Pods_PALExtension_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PALExtension_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		38C432C3C887A46C00B72CDF6DD340BE /* Pods-PALExtension_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PALExtension_Example-Info.plist"; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				1866D0CC25B2922900921674 /* UIView+ProgressIndicatorView.swift */,
 				1866D07525B1CCCA00921674 /* UIViewController+.swift */,
 				1866D07625B1CCCA00921674 /* UIWindow+.swift */,
+				1866D0E725B31F2600921674 /* NSLayoutConstraint+.swift */,
 			);
 			name = UI;
 			path = PALExtension/Classes/UI;
@@ -508,6 +511,7 @@
 				1866D0A525B1CCD100921674 /* NSMutableAttributedString+.swift in Sources */,
 				1866D07F25B1CCCA00921674 /* UIAlertController+.swift in Sources */,
 				1866D08B25B1CCCB00921674 /* UIWindow+.swift in Sources */,
+				1866D0E825B31F2600921674 /* NSLayoutConstraint+.swift in Sources */,
 				1866D09C25B1CCD100921674 /* NSObject+.swift in Sources */,
 				1866D08225B1CCCA00921674 /* UIRefreshControl+.swift in Sources */,
 				1866D08C25B1CCCB00921674 /* UIFont+.swift in Sources */,
@@ -601,7 +605,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;
@@ -830,7 +834,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;

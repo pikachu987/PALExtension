@@ -21,6 +21,15 @@
 import UIKit
 
 public extension UILabel {
+    func height(_ width: CGFloat) -> CGFloat {
+        let label =  UILabel(frame: CGRect(x: 0, y: 0, width: width, height: .greatestFiniteMagnitude))
+        label.numberOfLines = self.numberOfLines
+        label.text = self.text
+        label.font = self.font
+        label.sizeToFit()
+        return label.frame.height
+    }
+
     func highlight(_ value: String, valueAttributes: [NSAttributedString.Key: Any], searchText: String, attributes: [NSAttributedString.Key: Any]) {
         let attributed = NSMutableAttributedString(string: value)
         attributed.addAttributes(valueAttributes, range: NSRange(location: 0, length: value.count))
