@@ -24,27 +24,45 @@ class ViewController: UIViewController {
         return button
     }()
 
+    private let viewProgressIndicatorButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 10, y: 200, width: 200, height: 40))
+        button.setTitle("view progress indicator", for: .normal)
+        button.backgroundColor = .gray
+        return button
+    }()
+    
+    private let viewProgressIndicatorDimButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 10, y: 250, width: 200, height: 40))
+        button.setTitle("view progress indicator dim", for: .normal)
+        button.backgroundColor = .gray
+        return button
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         self.view.addSubview(self.viewIndicatorButton)
         self.view.addSubview(self.viewIndicatorDimButton)
+        self.view.addSubview(self.viewProgressIndicatorButton)
+        self.view.addSubview(self.viewProgressIndicatorDimButton)
         
         self.viewIndicatorButton.addTarget(self, action: #selector(self.viewIndicatorTap(_:)), for: .touchUpInside)
         self.viewIndicatorDimButton.addTarget(self, action: #selector(self.viewIndicatorDimTap(_:)), for: .touchUpInside)
+        self.viewProgressIndicatorButton.addTarget(self, action: #selector(self.viewProgressIndicatorTap(_:)), for: .touchUpInside)
+        self.viewProgressIndicatorDimButton.addTarget(self, action: #selector(self.viewProgressIndicatorDimTap(_:)), for: .touchUpInside)
         
         self.test()
     }
     
     @objc private func viewIndicatorTap(_ sender: UIButton) {
-        self.view.indicatorAdd(.blue)
+        let view = self.view.indicatorAdd(.blue)
         
-        self.view.indicatorsProgress(0, textColor: .red)
+        view.progress(0, textColor: .red)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.view.indicatorsProgress(50.5, textColor: .red)
+            view.progress(50.3, textColor: .red)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.view.indicatorsProgress(80.5, textColor: .red)
+                view.progress(80.5, textColor: .red)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.view.indicatorsRemove()
                 }
@@ -57,6 +75,42 @@ class ViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             UIView.indicatorsProgress(30.12, textColor: .red)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            view.remove()
+        }
+    }
+
+    @objc private func viewProgressIndicatorTap(_ sender: UIButton) {
+        let view = self.view.progressIndicatorAdd()
+        view.trackLineWidth = 2
+        view.trackColor = UIColor(white: 248/255, alpha: 1)
+        view.progressLineWidth = 2
+        view.progressColor = .black
+        view.layer.cornerRadius = 32
+        view.backgroundColor = .clear
+        
+        view.progress = 0
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            view.progress = 50.5
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                view.progress = 85.234
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    view.remove()
+                }
+            }
+        }
+    }
+
+    @objc private func viewProgressIndicatorDimTap(_ sender: UIButton) {
+        let view = UIView.progressIndicatorAdd(56, dimColor: UIColor(white: 0, alpha: 0.8))
+        view.trackLineWidth = 4
+        view.progressLineWidth = 4
+        view.trackColor = .blue
+        view.progressColor = .green
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            view.progress(30.12, decimalPlaces: 2, textColor: .red)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             view.remove()

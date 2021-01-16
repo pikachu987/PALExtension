@@ -108,11 +108,11 @@ public extension UIView {
     }
     
     class IndicatorView: UIView {
-        let isDim: Bool
-        let activityView: IndicatorActivityView
+        public let activityView: IndicatorActivityView
+        private let isDim: Bool
         private let activitySize: CGFloat
 
-        init(activitySize: CGFloat, isDim: Bool) {
+        public init(activitySize: CGFloat, isDim: Bool) {
             self.activitySize = activitySize
             self.isDim = isDim
             self.activityView = IndicatorActivityView(frame: CGRect(x: 0, y: 0, width: self.activitySize, height: self.activitySize))
@@ -120,7 +120,7 @@ public extension UIView {
             self.setupActivity()
         }
 
-        required init?(coder: NSCoder) {
+        required public init?(coder: NSCoder) {
             self.activitySize = 44
             self.isDim = false
             self.activityView = IndicatorActivityView(frame: CGRect(x: 0, y: 0, width: self.activitySize, height: self.activitySize))
@@ -167,7 +167,7 @@ public extension UIView {
 
     // 인디게이트 뷰
     class IndicatorActivityView: UIView {
-        private lazy var label: UILabel = {
+        public lazy var label: UILabel = {
             let label = UILabel()
             label.textAlignment = .center
             label.text = ""
@@ -186,19 +186,19 @@ public extension UIView {
 
         private var size: CGFloat = 44
 
-        fileprivate func updateSize(_ size: CGFloat) {
+        public func updateSize(_ size: CGFloat) {
             self.layer.cornerRadius = size/2
             self.size = size
         }
 
         // 프로그래스
-        fileprivate func progress(_ progress: Double, decimalPlaces: Int, textColor: UIColor) {
+        public func progress(_ progress: Double, decimalPlaces: Int, textColor: UIColor) {
             self.label.text = String(format: "%.\(decimalPlaces)f", progress).appending("%")
             self.label.textColor = textColor
         }
 
         // 애니메이션 시작
-        fileprivate func startAndShowAnimating(_ color: UIColor = .black, size: CGSize) {
+        public func startAndShowAnimating(_ color: UIColor = .black, size: CGSize) {
             self.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
 
             let size = CGSize(width: self.size, height: self.size)
@@ -265,7 +265,7 @@ public extension UIView {
         }
 
         // 애니메이션 중지
-        fileprivate func stopAndHideAnimating() {
+        public func stopAndHideAnimating() {
             self.layer.sublayers?.forEach({ $0.removeAllAnimations() })
             self.layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
             self.layer.sublayers = nil
