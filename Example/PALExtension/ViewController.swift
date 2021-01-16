@@ -10,17 +10,57 @@ import UIKit
 import PALExtension
 
 class ViewController: UIViewController {
+    private let viewIndicatorButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 10, y: 100, width: 200, height: 40))
+        button.setTitle("view indicator", for: .normal)
+        button.backgroundColor = .gray
+        return button
+    }()
+    
+    private let viewIndicatorDimButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 10, y: 150, width: 200, height: 40))
+        button.setTitle("view indicator dim", for: .normal)
+        button.backgroundColor = .gray
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.view.backgroundColor = .lightGray
-
-        self.view.addIndicator(.blue, dimColor: UIColor(white: 0, alpha: 0.6))
-        self.view.progressIndicator(32.6, decimalPlaces: 1, textColor: .black)
-
+        self.view.addSubview(self.viewIndicatorButton)
+        self.view.addSubview(self.viewIndicatorDimButton)
+        
+        self.viewIndicatorButton.addTarget(self, action: #selector(self.viewIndicatorTap(_:)), for: .touchUpInside)
+        self.viewIndicatorDimButton.addTarget(self, action: #selector(self.viewIndicatorDimTap(_:)), for: .touchUpInside)
+        
         self.test()
+    }
+    
+    @objc private func viewIndicatorTap(_ sender: UIButton) {
+        self.view.indicatorAdd(.blue)
+        
+        self.view.indicatorsProgress(0, textColor: .red)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.view.indicatorsProgress(50.5, textColor: .red)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.view.indicatorsProgress(80.5, textColor: .red)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.view.indicatorsRemove()
+                }
+            }
+        }
+    }
+    
+    @objc private func viewIndicatorDimTap(_ sender: UIButton) {
+        let view = UIView.indicatorAdd(.red, dimColor: UIColor(white: 0, alpha: 0.7))
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            UIView.indicatorsProgress(30.12, textColor: .red)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            view.remove()
+        }
     }
 
     override func didReceiveMemoryWarning() {

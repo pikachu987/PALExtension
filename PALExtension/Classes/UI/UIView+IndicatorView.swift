@@ -22,87 +22,151 @@ import UIKit
 
 // 뷰 + 인디게이터 뷰
 public extension UIView {
+    private static var window: UIWindow? {
+        if let window = UIApplication.shared.keyWindow {
+            return window
+        } else {
+            let windows = UIApplication.shared.windows
+            for window in windows {
+                return window
+            }
+            return nil
+        }
+    }
+
+    static var isIndicator: Bool {
+        return self.window?.isIndicator ?? false
+    }
+
+    static var indicators: [IndicatorView] {
+        return self.window?.indicators ?? []
+    }
+
+    @discardableResult
+    static func indicatorAdd(_ color: UIColor, size: CGFloat = 44, dimColor: UIColor? = nil) -> IndicatorView {
+        return self.window?.indicatorAdd(color, size: size, dimColor: dimColor) ?? IndicatorView(activitySize: size, isDim: dimColor != nil)
+    }
+    
+    static func indicatorsProgress(_ progress: Double, decimalPlaces: Int = 1, textColor: UIColor = .white) {
+        self.window?.indicatorsProgress(progress, decimalPlaces: decimalPlaces, textColor: textColor)
+    }
+
+    static func indicatorsRemove() {
+        self.window?.indicatorsRemove()
+    }
 
     var isIndicator: Bool {
-        return !self.subviews.compactMap({ $0 as? IndicatorActivityView }).isEmpty
-    }
-    
-    var isIndicatorDim: Bool {
-        return !self.subviews.compactMap({ $0 as? IndicatorDimView }).isEmpty
-    }
-    
-
-    var indicators: [UIView] {
-        return self.subviews.filter({ $0 as? IndicatorActivityView != nil })
-    }
-    
-    var indicatorDims: [UIView] {
-        return self.subviews.filter({ $0 as? IndicatorDimView != nil })
+        return !self.subviews.compactMap({ $0 as? IndicatorView }).isEmpty
     }
 
-    // 추가
+    var indicators: [IndicatorView] {
+        return self.subviews.compactMap({ $0 as? IndicatorView })
+    }
+
     @discardableResult
-    func addIndicator(_ color: UIColor, size: CGFloat = 44, dimColor: UIColor? = nil) -> UIView {
-        var dimView: UIView?
+    func indicatorAdd(_ color: UIColor, size: CGFloat = 44, dimColor: UIColor? = nil) -> IndicatorView {
+        let containerView = IndicatorView(activitySize: size, isDim: dimColor != nil)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.isUserInteractionEnabled = true
+        self.addSubview(containerView)
+        
         if let dimColor = dimColor {
-            dimView = IndicatorDimView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-            dimView?.backgroundColor = dimColor
-            dimView?.translatesAutoresizingMaskIntoConstraints = false
-        }
-
-        let indicatorView = IndicatorActivityView(frame: CGRect(x: 0, y: 0, width: size, height: size))
-        indicatorView.updateSize(size)
-        DispatchQueue.main.async {
-            if let dimView = dimView {
-                self.addSubview(dimView)
-                self.addConstraints([
-                    NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: dimView, attribute: .leading, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: dimView, attribute: .trailing, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: dimView, attribute: .top, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: dimView, attribute: .bottom, multiplier: 1, constant: 0),
-                ])
-            }
-            indicatorView.translatesAutoresizingMaskIntoConstraints = false
-            self.addSubview(indicatorView)
             self.addConstraints([
-                NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: indicatorView, attribute: .centerX, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: indicatorView, attribute: .centerY, multiplier: 1, constant: 0)
+                NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 0)
             ])
-            indicatorView.addConstraints([
-                NSLayoutConstraint(item: indicatorView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: size),
-                NSLayoutConstraint(item: indicatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: size)
+            containerView.backgroundColor = dimColor
+        } else {
+            self.addConstraints([
+                NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: containerView, attribute: .centerX, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: containerView, attribute: .centerY, multiplier: 1, constant: 0)
             ])
-            indicatorView.startAndShowAnimating(color, size: CGSize(width: size, height: size))
+            containerView.addConstraints([
+                NSLayoutConstraint(item: containerView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: size),
+                NSLayoutConstraint(item: containerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: size)
+            ])
+            containerView.backgroundColor = .clear
         }
-        return indicatorView
+        containerView.activityView.startAndShowAnimating(color, size: CGSize(width: size, height: size))
+        return containerView
     }
 
     // 프로그래스
-    func progressIndicator(_ progress: Double, decimalPlaces: Int = 1, textColor: UIColor = .white) {
-        DispatchQueue.main.async {
-            self.subviews.compactMap({ $0 as? IndicatorActivityView }).forEach({
-                $0.progress(progress, decimalPlaces: decimalPlaces, textColor: textColor)
-            })
-        }
+    func indicatorsProgress(_ progress: Double, decimalPlaces: Int = 1, textColor: UIColor = .white) {
+        self.indicators.forEach({
+            $0.progress(progress, decimalPlaces: decimalPlaces, textColor: textColor)
+        })
     }
 
     // 지우기
-    func removeIndicators() {
-        self.subviews.compactMap({ $0 as? IndicatorActivityView }).forEach({
-            $0.stopAndHideAnimating()
-            $0.removeFromSuperview()
-        })
-        self.subviews.compactMap({ $0 as? IndicatorDimView }).forEach({
-            $0.removeFromSuperview()
+    func indicatorsRemove() {
+        self.indicators.forEach({
+            $0.remove()
         })
     }
     
-    private class IndicatorDimView: UIView {
+    class IndicatorView: UIView {
+        let isDim: Bool
+        let activityView: IndicatorActivityView
+        private let activitySize: CGFloat
+
+        init(activitySize: CGFloat, isDim: Bool) {
+            self.activitySize = activitySize
+            self.isDim = isDim
+            self.activityView = IndicatorActivityView(frame: CGRect(x: 0, y: 0, width: self.activitySize, height: self.activitySize))
+            super.init(frame: .zero)
+            self.setupActivity()
+        }
+
+        required init?(coder: NSCoder) {
+            self.activitySize = 44
+            self.isDim = false
+            self.activityView = IndicatorActivityView(frame: CGRect(x: 0, y: 0, width: self.activitySize, height: self.activitySize))
+            super.init(coder: coder)
+            self.setupActivity()
+        }
+
+        private func setupActivity() {
+            self.activityView.translatesAutoresizingMaskIntoConstraints = false
+            self.activityView.updateSize(self.activitySize)
+            
+            self.addSubview(self.activityView)
+            if self.isDim {
+                self.addConstraints([
+                    NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: self.activityView, attribute: .centerX, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: self.activityView, attribute: .centerY, multiplier: 1, constant: 0)
+                ])
+                self.activityView.addConstraints([
+                    NSLayoutConstraint(item: self.activityView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: self.activitySize),
+                    NSLayoutConstraint(item: self.activityView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: self.activitySize)
+                ])
+            } else {
+                self.addConstraints([
+                    NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: self.activityView, attribute: .leading, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.activityView, attribute: .trailing, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: self.activityView, attribute: .top, multiplier: 1, constant: 0),
+                    NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: self.activityView, attribute: .bottom, multiplier: 1, constant: 0)
+                ])
+            }
+        }
         
+        public func remove() {
+            self.subviews.compactMap({ $0 as? IndicatorActivityView }).forEach({
+                $0.stopAndHideAnimating()
+                $0.removeFromSuperview()
+            })
+            self.removeFromSuperview()
+        }
+        
+        public func progress(_ progress: Double, decimalPlaces: Int = 1, textColor: UIColor = .white) {
+            self.activityView.progress(progress, decimalPlaces: decimalPlaces, textColor: textColor)
+        }
     }
 
     // 인디게이트 뷰
-    private class IndicatorActivityView: UIView {
+    class IndicatorActivityView: UIView {
         private lazy var label: UILabel = {
             let label = UILabel()
             label.textAlignment = .center
@@ -205,125 +269,6 @@ public extension UIView {
             self.layer.sublayers?.forEach({ $0.removeAllAnimations() })
             self.layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
             self.layer.sublayers = nil
-        }
-    }
-    
-    class CircleProgressView: UIView {
-        var progressLayer: CAShapeLayer = {
-            let layer = CAShapeLayer()
-            layer.fillColor = UIColor.clear.cgColor
-            layer.strokeEnd = 0.0
-            return layer
-        }()
-
-        var trackLayer: CAShapeLayer = {
-            let layer = CAShapeLayer()
-            layer.fillColor = UIColor.clear.cgColor
-            layer.strokeEnd = 1.0
-            return layer
-        }()
-
-        var progressColor: UIColor? {
-            get {
-                if let color = self.progressLayer.strokeColor {
-                    return UIColor(cgColor: color)
-                }
-                return nil
-            }
-            set {
-                self.progressLayer.strokeColor = newValue?.cgColor
-            }
-        }
-
-        var trackColor: UIColor? {
-            get {
-                if let color = self.trackLayer.strokeColor {
-                    return UIColor(cgColor: color)
-                }
-                return nil
-            }
-            set {
-                self.trackLayer.strokeColor = newValue?.cgColor
-            }
-        }
-
-        var progressLineWidth: CGFloat {
-            get {
-                return self.progressLayer.lineWidth
-            }
-            set {
-                self.progressLayer.lineWidth = newValue
-            }
-        }
-
-        var trackLineWidth: CGFloat {
-            get {
-                return self.trackLayer.lineWidth
-            }
-            set {
-                self.trackLayer.lineWidth = newValue
-            }
-        }
-
-        var progress: CGFloat {
-            get {
-                return self.progressLayer.strokeEnd
-            }
-            set {
-                self.progressLayer.strokeEnd = newValue
-            }
-        }
-
-        var isProgress: Bool {
-            guard let sublayers = self.layer.sublayers else { return false }
-            if sublayers.contains(self.trackLayer) && sublayers.contains(self.progressLayer) {
-                return true
-            }
-            return false
-        }
-
-        func addProgressIndicator(_ color: UIColor? = nil) {
-            self.removeProgressIndicator()
-            if let color = color {
-                self.backgroundColor = color
-            }
-            self.layoutIfNeeded()
-            self.layer.cornerRadius = self.frame.size.width/2
-            let circlePath = UIBezierPath(arcCenter: CGPoint(x: self.frame.size.width/2, y: self.frame.size.height/2), radius: self.frame.size.width/2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
-
-            self.layer.addSublayer(self.trackLayer)
-            self.layer.addSublayer(self.progressLayer)
-
-            self.trackLayer.path = circlePath.cgPath
-            self.trackLayer.strokeColor = self.trackColor?.cgColor
-            self.trackLayer.lineWidth = self.trackLineWidth
-
-            self.progressLayer.path = circlePath.cgPath
-            self.progressLayer.strokeColor = self.progressColor?.cgColor
-            self.progressLayer.lineWidth = self.trackLineWidth
-            self.progressLayer.strokeEnd = 0
-        }
-
-        func removeProgressIndicator() {
-            guard let sublayers = self.layer.sublayers else { return }
-            if sublayers.contains(self.trackLayer) {
-                self.trackLayer.removeFromSuperlayer()
-            }
-
-            if sublayers.contains(self.progressLayer) {
-                self.progressLayer.removeFromSuperlayer()
-                self.progressLayer.strokeEnd = 0
-            }
-        }
-
-        func setProgressWithAnimation(duration: TimeInterval, value: Float) {
-            let animation = CABasicAnimation(keyPath: "strokeEnd")
-            animation.duration = duration
-            animation.fromValue = self.progressLayer.strokeEnd
-            animation.toValue = value
-            animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-            self.progressLayer.strokeEnd = CGFloat(value)
-            self.progressLayer.add(animation, forKey: "animateprogress")
         }
     }
 }
