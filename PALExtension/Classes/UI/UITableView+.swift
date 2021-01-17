@@ -186,5 +186,5 @@ public extension UITableView {
         let offsetY = self.contentOffset.y
         self.setContentOffset(CGPoint(x: self.contentOffset.x, y: offsetY-changeBetweenValue), animated: animated)
     }
-    
 }
+

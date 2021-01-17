@@ -9,7 +9,7 @@
 import UIKit
 import PALExtension
 
-class ViewController: UIViewController {
+class ViewController: UIViewController.Base {
     private let array = ActionType.array
 
     private let imageView: UIImageView = {
@@ -20,9 +20,36 @@ class ViewController: UIViewController {
         return imageView
     }()
     
+    private let shadowView: UIView = {
+        let view = UIView.ShadowView(frame: CGRect(x: 230, y: 100, width: 100, height: 100))
+        view.shadowColor = .red
+        view.backgroundColor = .blue
+        return view
+    }()
+
+    private let dynamicTextView: UITextView.DynamicHeightTextView = {
+        let view = UITextView.DynamicHeightTextView(placeholder: "Test Example", maxLength: -1, minHeight: 80, maxHeight: 300)
+        view.frame = CGRect(x: 230, y: 210, width: 100, height: 100)
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.black.cgColor
+        return view
+    }()
+    
+    private let indicatorButton: UIButton.IndicatorButton = {
+        let view = UIButton.IndicatorButton(type: .system)
+        view.frame = CGRect(x: 10, y: 330, width: 40, height: 40)
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.gray.cgColor
+        view.setTitle("OK", for: .normal)
+        view.setTitleColor(.green, for: .normal)
+        view.highlightedColor = .lightGray
+        return view
+    }()
+
     private let tableView: UITableView = {
-        let tableView = UITableView(frame: CGRect(x: 0, y: 300, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 300), style: .plain)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 400, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 400), style: .plain)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
+        tableView.register(UITableViewCell.bottomIndicatorCell, forCellReuseIdentifier: UITableViewCell.bottomIndicatorCellIdentifier)
         return tableView
     }()
 
@@ -31,10 +58,17 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.view.addSubview(self.imageView)
+        self.view.addSubview(self.shadowView)
+        self.view.addSubview(self.dynamicTextView)
         self.view.addSubview(self.tableView)
+        self.view.addSubview(self.indicatorButton)
         
+        self.dynamicTextView.dynamicDelegate = self
+
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        self.indicatorButton.addTarget(self, action: #selector(self.indicatorTap(_:)), for: .touchUpInside)
         
         self.test()
     }
@@ -44,6 +78,44 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func resign() {
+        super.resign()
+        
+        self.dynamicTextView.resignFirstResponder()
+    }
+    
+    override func willResignActive(_ notification: Notification) {
+        super.willResignActive(notification)
+        
+        print("willResignActive: \(notification)")
+    }
+    
+    override func willEnterForeground(_ notification: Notification) {
+        super.willEnterForeground(notification)
+        
+        print("willEnterForeground: \(notification)")
+    }
+    
+    override func didEnterBackground(_ notification: Notification) {
+        super.didEnterBackground(notification)
+
+        print("didEnterBackground: \(notification)")
+    }
+    
+    override func didBecomeActive(_ notification: Notification) {
+        super.didBecomeActive(notification)
+
+        print("didBecomeActive: \(notification)")
+    }
+
+    @objc private func indicatorTap(_ sender: UIButton.IndicatorButton) {
+        sender.showIndicator(color: .blue) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                sender.hideIndicator()
+            }
+        }
+    }
+
     private func start(_ filename: String, _ fnName: String) {
         print("--------------------------------------------------")
         print("[\(filename)] - \(fnName)")
@@ -408,6 +480,22 @@ class ViewController: UIViewController {
         self.start("UIImageView+", "self.imageView.imageFrame")
         print(self.imageView.imageFrame)
         self.end()
+        
+        self.start("UIColor+", "UIColor.red.hsv")
+        print(UIColor.red.hsv)
+        self.end()
+        
+        self.start("UIColor+", "UIColor(red: 100/255, green: 150/255, blue: 200/255, alpha: 1).hsv.rgb")
+        print(UIColor(red: 100/255, green: 150/255, blue: 200/255, alpha: 1).hsv.rgb)
+        self.end()
+    }
+}
+
+extension ViewController: DynamicHeightTextViewDelegate {
+    func dynamicHeightTextViewHeight(_ textView: UITextView.DynamicHeightTextView, height: CGFloat) {
+        print("height: \(height)")
+        print("textView.height: \(textView.height), max: \(textView.maxHeight)")
+        textView.frame.size.height = height
     }
 }
 
@@ -514,12 +602,17 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.array.count
+        return self.array.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        cell.textLabel?.text = self.array[indexPath.row].rawValue
-        return cell
+        if indexPath.row >= self.array.count {
+            let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.bottomIndicatorCellIdentifier, for: indexPath)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+            cell.textLabel?.text = self.array[indexPath.row].rawValue
+            return cell
+        }
     }
 }

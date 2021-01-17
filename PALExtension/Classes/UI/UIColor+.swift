@@ -20,98 +20,6 @@
 
 import UIKit
 
-// RGB
-public struct RGB {
-    public let r: CGFloat
-    public let g: CGFloat
-    public let b: CGFloat
-    
-    public var hsv: HSV {
-        return RGB.hsv(self)
-    }
-    
-    public static func hsv(r: CGFloat, g: CGFloat, b: CGFloat) -> HSV {
-        let min = r < g ? (r < b ? r : b) : (g < b ? g : b)
-        let max = r > g ? (r > b ? r : b) : (g > b ? g : b)
-        
-        let v = max
-        let delta = max - min
-        
-        guard delta > 0.00001 else { return HSV(h: 0, s: 0, v: max) }
-        guard max > 0 else { return HSV(h: -1, s: 0, v: v) }
-        let s = delta / max
-        
-        let hue: (CGFloat, CGFloat) -> CGFloat = { max, delta -> CGFloat in
-            if r == max { return (g-b)/delta } // between yellow & magenta
-            else if g == max { return 2 + (b-r)/delta } // between cyan & yellow
-            else { return 4 + (r-g)/delta } // between magenta & cyan
-        }
-        let h = hue(max, delta) * 60 // degrees
-        return HSV(h: (h < 0 ? h+360 : h) , s: s, v: v)
-    }
-
-    public static func hsv(_ rgb: RGB) -> HSV {
-        return hsv(r: rgb.r, g: rgb.g, b: rgb.b)
-    }
-}
-
-// RGBA
-public struct RGBA {
-    let a: CGFloat
-    let rgb: RGB
-
-    public init(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
-        self.a = a
-        self.rgb = RGB(r: r, g: g, b: b)
-    }
-}
-
-public struct HSV {
-    public let h: CGFloat
-    public let s: CGFloat
-    public let v: CGFloat
-
-    public var rgb: RGB {
-        return HSV.rgb(self)
-    }
-    
-    public var point: CGPoint {
-        return CGPoint(x: CGFloat(h/360), y: CGFloat(v))
-    }
-    
-    public static func rgb(_ h: CGFloat, s: CGFloat, v: CGFloat) -> RGB {
-        if s == 0 { return RGB(r: v, g: v, b: v) }
-        
-        let angle = (h >= 360 ? 0 : h)
-        let sector = angle / 60
-        let i = floor(sector)
-        let f = sector - i
-        
-        let p = v * (1 - s)
-        let q = v * (1 - (s * f))
-        let t = v * (1 - (s * (1 - f)))
-        
-        switch(i) {
-        case 0:
-            return RGB(r: v, g: t, b: p)
-        case 1:
-            return RGB(r: q, g: v, b: p)
-        case 2:
-            return RGB(r: p, g: v, b: t)
-        case 3:
-            return RGB(r: p, g: q, b: v)
-        case 4:
-            return RGB(r: t, g: p, b: v)
-        default:
-            return RGB(r: v, g: p, b: q)
-        }
-    }
-    
-    public static func rgb(_ hsv: HSV) -> RGB {
-        return rgb(hsv.h, s: hsv.s, v: hsv.v)
-    }
-}
-
 public extension UIColor {
     
     convenience init(light: UIColor, dark: UIColor) {
@@ -156,6 +64,7 @@ public extension UIColor {
     var green: CGFloat { return CIColor(color: self).green }
     var blue: CGFloat { return CIColor(color: self).blue }
     var alpha: CGFloat { return CIColor(color: self).alpha }
+    
     
     var toHexString: String {
         var r: CGFloat = 0
@@ -208,5 +117,88 @@ public extension UIColor {
         guard let image: UIImage = UIGraphicsGetImageFromCurrentImageContext() else { return nil  }
         UIGraphicsEndImageContext()
         return image
+    }
+}
+
+
+public extension UIColor {
+    var hsv: HSV {
+        return UIColor.hsv(self)
+    }
+    
+    static func hsv(red: CGFloat, green: CGFloat, blue: CGFloat) -> HSV {
+        let min = red < green ? (red < blue ? red : blue) : (green < blue ? green : blue)
+        let max = red > green ? (red > blue ? red : blue) : (green > blue ? green : blue)
+        
+        let value = max
+        let delta = max - min
+        
+        guard delta > 0.00001 else { return HSV(hue: 0, saturation: 0, value: max) }
+        guard max > 0 else { return HSV(hue: -1, saturation: 0, value: value) }
+        let saturation = delta / max
+        
+        let hueSet: (CGFloat, CGFloat) -> CGFloat = { max, delta -> CGFloat in
+            if red == max { return (green - blue)/delta } // between yellow & magenta
+            else if green == max { return 2 + (blue - red)/delta } // between cyan & yellow
+            else { return 4 + (red - green)/delta } // between magenta & cyan
+        }
+        let hue = hueSet(max, delta) * 60 // degrees
+        return HSV(hue: (hue < 0 ? hue+360 : hue) , saturation: saturation, value: value)
+    }
+
+    static func hsv(_ color: UIColor) -> HSV {
+        return hsv(red: color.red, green: color.green, blue: color.blue)
+    }
+}
+
+public extension UIColor {
+    private convenience init(red: CGFloat, green: CGFloat, blue: CGFloat) {
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+
+    struct HSV {
+        public let hue: CGFloat // 색상
+        public let saturation: CGFloat // 채도
+        public let value: CGFloat //명도
+
+        public var rgb: UIColor {
+            return HSV.rgb(self)
+        }
+        
+        public var point: CGPoint {
+            return CGPoint(x: CGFloat(hue/360), y: CGFloat(value))
+        }
+        
+        public static func color(_ hue: CGFloat, saturation: CGFloat, value: CGFloat) -> UIColor {
+            if saturation == 0 { return UIColor(red: value, green: value, blue: value) }
+            
+            let angle = (hue >= 360 ? 0 : hue)
+            let sector = angle / 60
+            let i = floor(sector)
+            let f = sector - i
+            
+            let p = value * (1 - saturation)
+            let q = value * (1 - (saturation * f))
+            let t = value * (1 - (saturation * (1 - f)))
+            
+            switch(i) {
+            case 0:
+                return UIColor(red: value, green: t, blue: p)
+            case 1:
+                return UIColor(red: q, green: value, blue: p)
+            case 2:
+                return UIColor(red: p, green: value, blue: t)
+            case 3:
+                return UIColor(red: p, green: q, blue: value)
+            case 4:
+                return UIColor(red: t, green: p, blue: value)
+            default:
+                return UIColor(red: value, green: p, blue: q)
+            }
+        }
+        
+        public static func rgb(_ hsv: HSV) -> UIColor {
+            return self.color(hsv.hue, saturation: hsv.saturation, value: hsv.value)
+        }
     }
 }

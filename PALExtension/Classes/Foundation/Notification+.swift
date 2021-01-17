@@ -31,3 +31,69 @@ public extension Notification {
         return UIView.AnimationOptions(rawValue: curve)
     }
 }
+
+extension Notification {
+    
+    typealias KeyboardSizes = (keyboard: CGRect, safearea: CGRect)
+
+    func keyboardSize(_ view: UIView) -> KeyboardSizes? {
+        guard let keyboardSize1 = ((self as NSNotification).userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return nil }
+        guard let keyboardSize2 = ((self as NSNotification).userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else { return nil }
+        let keyboardSize = keyboardSize1.height == 0 ? keyboardSize2 : keyboardSize1
+        var safeAreaSize = keyboardSize
+        if #available(iOS 11.0, *) {
+            safeAreaSize.size.height = safeAreaSize.height - view.safe.bottom
+        }
+        return (keyboard: keyboardSize, safearea: safeAreaSize)
+    }
+
+    static func addDefaultNotification(_ viewController: UIViewController) {
+        NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationKeyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationKeyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationApplicationWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationApplicationDidEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationApplicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationApplicationDidBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationMenuHide(_:)), name: UIMenuController.willHideMenuNotification, object: nil)
+    }
+    
+    static func removeDefaultNotification(_ viewController: UIViewController) {
+        NotificationCenter.default.removeObserver(viewController, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(viewController, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(viewController, name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(viewController, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(viewController, name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(viewController, name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(viewController, name: UIMenuController.willHideMenuNotification, object: nil)
+    }
+}
+
+extension UIViewController {
+    @objc func notificationKeyboardWillShow(_ notification: Notification) {
+        
+    }
+
+    @objc func notificationKeyboardWillHide(_ notification: Notification) {
+        
+    }
+
+    @objc func notificationApplicationWillResignActive(_ notification: Notification) {
+        
+    }
+
+    @objc func notificationApplicationDidEnterBackground(_ notification: Notification) {
+        
+    }
+
+    @objc func notificationApplicationWillEnterForeground(_ notification: Notification) {
+        
+    }
+
+    @objc func notificationApplicationDidBecomeActive(_ notification: Notification) {
+        
+    }
+    
+    @objc func notificationMenuHide(_ notification: Notification) {
+
+    }
+}

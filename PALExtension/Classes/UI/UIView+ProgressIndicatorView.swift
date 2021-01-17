@@ -22,29 +22,17 @@ import UIKit
 
 // 뷰 + 인디게이터 뷰
 public extension UIView {
-    private static var window: UIWindow? {
-        if let window = UIApplication.shared.keyWindow {
-            return window
-        } else {
-            let windows = UIApplication.shared.windows
-            for window in windows {
-                return window
-            }
-            return nil
-        }
-    }
-
     static var isProgressIndicator: Bool {
-        return self.window?.isProgressIndicator ?? false
+        return UIApplication.shared.currentWindow?.isProgressIndicator ?? false
     }
 
     static var progressIndicators: [ProgressIndicatorView] {
-        return self.window?.progressIndicators ?? []
+        return UIApplication.shared.currentWindow?.progressIndicators ?? []
     }
 
     @discardableResult
     static func progressIndicatorAdd(_ size: CGFloat = 44, dimColor: UIColor? = nil) -> ProgressIndicatorView {
-        return self.window?.progressIndicatorAdd(size, dimColor: dimColor) ?? ProgressIndicatorView(activitySize: size, isDim: dimColor != nil)
+        return UIApplication.shared.currentWindow?.progressIndicatorAdd(size, dimColor: dimColor) ?? ProgressIndicatorView(activitySize: size, isDim: dimColor != nil)
     }
     
     var isProgressIndicator: Bool {
@@ -84,17 +72,19 @@ public extension UIView {
         containerView.activityView.addProgressIndicator()
         return containerView
     }
-    
-    class ProgressIndicatorView: UIView {
-        public var progressLayer: CAShapeLayer {
+}
+
+extension UIView {
+    open class ProgressIndicatorView: UIView {
+        open var progressLayer: CAShapeLayer {
             return self.activityView.progressLayer
         }
 
-        public var trackLayer: CAShapeLayer {
+        open var trackLayer: CAShapeLayer {
             return self.activityView.trackLayer
         }
 
-        public var progressColor: UIColor? {
+        open var progressColor: UIColor? {
             get {
                 return self.activityView.progressColor
             }
@@ -103,7 +93,7 @@ public extension UIView {
             }
         }
 
-        public var trackColor: UIColor? {
+        open var trackColor: UIColor? {
             get {
                 return self.activityView.trackColor
             }
@@ -112,7 +102,7 @@ public extension UIView {
             }
         }
 
-        public var progressLineWidth: CGFloat {
+        open var progressLineWidth: CGFloat {
             get {
                 return self.activityView.progressLineWidth
             }
@@ -121,7 +111,7 @@ public extension UIView {
             }
         }
 
-        public var trackLineWidth: CGFloat {
+        open var trackLineWidth: CGFloat {
             get {
                 return self.activityView.trackLineWidth
             }
@@ -130,7 +120,7 @@ public extension UIView {
             }
         }
 
-        public var progress: CGFloat {
+        open var progress: CGFloat {
             get {
                 return self.activityView.progress
             }
@@ -139,7 +129,7 @@ public extension UIView {
             }
         }
 
-        public var isProgress: Bool {
+        open var isProgress: Bool {
             return self.activityView.isProgress
         }
         
@@ -195,7 +185,7 @@ public extension UIView {
             self.activityView.backgroundColor = .clear
         }
         
-        public func remove() {
+        open func remove() {
             self.subviews.compactMap({ $0 as? CircleProgressView }).forEach({
                 $0.removeProgressIndicator()
                 $0.removeFromSuperview()
@@ -203,15 +193,15 @@ public extension UIView {
             self.removeFromSuperview()
         }
         
-        public func progress(_ progress: Double, decimalPlaces: Int, textColor: UIColor) {
+        open func progress(_ progress: Double, decimalPlaces: Int, textColor: UIColor) {
             self.progress = CGFloat(progress)
             self.activityView.label.text = String(format: "%.\(decimalPlaces)f", progress).appending("%")
             self.activityView.label.textColor = textColor
         }
     }
 
-    class CircleProgressView: UIView {
-        public lazy var label: UILabel = {
+    open class CircleProgressView: UIView {
+        open lazy var label: UILabel = {
             let label = UILabel()
             label.textAlignment = .center
             label.text = ""
@@ -228,21 +218,21 @@ public extension UIView {
             return label
         }()
 
-        public var progressLayer: CAShapeLayer = {
+        open var progressLayer: CAShapeLayer = {
             let layer = CAShapeLayer()
             layer.fillColor = UIColor.clear.cgColor
             layer.strokeEnd = 0.0
             return layer
         }()
 
-        public var trackLayer: CAShapeLayer = {
+        open var trackLayer: CAShapeLayer = {
             let layer = CAShapeLayer()
             layer.fillColor = UIColor.clear.cgColor
             layer.strokeEnd = 1.0
             return layer
         }()
 
-        public var progressColor: UIColor? {
+        open var progressColor: UIColor? {
             get {
                 if let color = self.progressLayer.strokeColor {
                     return UIColor(cgColor: color)
@@ -254,7 +244,7 @@ public extension UIView {
             }
         }
 
-        public var trackColor: UIColor? {
+        open var trackColor: UIColor? {
             get {
                 if let color = self.trackLayer.strokeColor {
                     return UIColor(cgColor: color)
@@ -266,7 +256,7 @@ public extension UIView {
             }
         }
 
-        public var progressLineWidth: CGFloat {
+        open var progressLineWidth: CGFloat {
             get {
                 return self.progressLayer.lineWidth
             }
@@ -275,7 +265,7 @@ public extension UIView {
             }
         }
 
-        public var trackLineWidth: CGFloat {
+        open var trackLineWidth: CGFloat {
             get {
                 return self.trackLayer.lineWidth
             }
@@ -284,7 +274,7 @@ public extension UIView {
             }
         }
 
-        public var progress: CGFloat {
+        open var progress: CGFloat {
             get {
                 return self.progressLayer.strokeEnd * 100
             }
@@ -293,7 +283,7 @@ public extension UIView {
             }
         }
 
-        public var isProgress: Bool {
+        open var isProgress: Bool {
             guard let sublayers = self.layer.sublayers else { return false }
             if sublayers.contains(self.trackLayer) && sublayers.contains(self.progressLayer) {
                 return true
@@ -301,7 +291,7 @@ public extension UIView {
             return false
         }
 
-        public func addProgressIndicator() {
+        open func addProgressIndicator() {
             self.removeProgressIndicator()
             self.layoutIfNeeded()
             self.layer.cornerRadius = self.frame.size.width/2
@@ -320,7 +310,7 @@ public extension UIView {
             self.progressLayer.strokeEnd = 0
         }
 
-        public func removeProgressIndicator() {
+        open func removeProgressIndicator() {
             guard let sublayers = self.layer.sublayers else { return }
             if sublayers.contains(self.trackLayer) {
                 self.trackLayer.removeFromSuperlayer()
@@ -332,7 +322,7 @@ public extension UIView {
             }
         }
 
-        public func setProgressWithAnimation(duration: TimeInterval, value: Float) {
+        open func setProgressWithAnimation(duration: TimeInterval, value: Float) {
             let animation = CABasicAnimation(keyPath: "strokeEnd")
             animation.duration = duration
             animation.fromValue = self.progressLayer.strokeEnd
@@ -342,7 +332,7 @@ public extension UIView {
             self.progressLayer.add(animation, forKey: "animateprogress")
         }
 
-        public func progressText(_ progress: Double, decimalPlaces: Int, textColor: UIColor) {
+        open func progressText(_ progress: Double, decimalPlaces: Int, textColor: UIColor) {
             self.progress = CGFloat(progress)
             self.label.text = String(format: "%.\(decimalPlaces)f", progress).appending("%")
             self.label.textColor = textColor

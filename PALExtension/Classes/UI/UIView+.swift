@@ -21,6 +21,19 @@
 import UIKit
 
 public extension UIView {
+    var safe: SafeArea {
+        var safeArea = SafeArea()
+        if #available(iOS 11.0, *) {
+            guard let keyWindow = UIApplication.shared.keyWindow else { return safeArea }
+            safeArea.left = keyWindow.safeAreaInsets.left
+            safeArea.right = keyWindow.safeAreaInsets.right
+            safeArea.bottom = keyWindow.safeAreaInsets.bottom
+        }
+        safeArea.statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let currentViewController = UIApplication.shared.currentViewController
+        safeArea.top = currentViewController?.navigationController?.navigationBar.frame.height ?? UINavigationController().navigationBar.frame.size.height
+        return safeArea
+    }
     
     var imageWithView: UIImage? {
         if #available(iOS 10.0, *) {
