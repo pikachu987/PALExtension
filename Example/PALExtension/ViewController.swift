@@ -10,113 +10,35 @@ import UIKit
 import PALExtension
 
 class ViewController: UIViewController {
-    private let viewIndicatorButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 10, y: 100, width: 200, height: 40))
-        button.setTitle("view indicator", for: .normal)
-        button.backgroundColor = .gray
-        return button
-    }()
-    
-    private let viewIndicatorDimButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 10, y: 150, width: 200, height: 40))
-        button.setTitle("view indicator dim", for: .normal)
-        button.backgroundColor = .gray
-        return button
-    }()
+    private let array = ActionType.array
 
-    private let viewProgressIndicatorButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 10, y: 200, width: 200, height: 40))
-        button.setTitle("view progress indicator", for: .normal)
-        button.backgroundColor = .gray
-        return button
+    private let imageView: UIImageView = {
+        let imageView = UIImageView(frame: CGRect(x: 10, y: 100, width: 200, height: 200))
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "image.png")
+        imageView.backgroundColor = .lightGray
+        return imageView
     }()
     
-    private let viewProgressIndicatorDimButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 10, y: 250, width: 200, height: 40))
-        button.setTitle("view progress indicator dim", for: .normal)
-        button.backgroundColor = .gray
-        return button
+    private let tableView: UITableView = {
+        let tableView = UITableView(frame: CGRect(x: 0, y: 300, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 300), style: .plain)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
+        return tableView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.view.addSubview(self.viewIndicatorButton)
-        self.view.addSubview(self.viewIndicatorDimButton)
-        self.view.addSubview(self.viewProgressIndicatorButton)
-        self.view.addSubview(self.viewProgressIndicatorDimButton)
+        self.view.addSubview(self.imageView)
+        self.view.addSubview(self.tableView)
         
-        self.viewIndicatorButton.addTarget(self, action: #selector(self.viewIndicatorTap(_:)), for: .touchUpInside)
-        self.viewIndicatorDimButton.addTarget(self, action: #selector(self.viewIndicatorDimTap(_:)), for: .touchUpInside)
-        self.viewProgressIndicatorButton.addTarget(self, action: #selector(self.viewProgressIndicatorTap(_:)), for: .touchUpInside)
-        self.viewProgressIndicatorDimButton.addTarget(self, action: #selector(self.viewProgressIndicatorDimTap(_:)), for: .touchUpInside)
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         
         self.test()
     }
     
-    @objc private func viewIndicatorTap(_ sender: UIButton) {
-        let view = self.view.indicatorAdd(.blue)
-        
-        view.progress(0, textColor: .red)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            view.progress(50.3, textColor: .red)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                view.progress(80.5, textColor: .red)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.view.indicatorsRemove()
-                }
-            }
-        }
-    }
-    
-    @objc private func viewIndicatorDimTap(_ sender: UIButton) {
-        let view = UIView.indicatorAdd(.red, dimColor: UIColor(white: 0, alpha: 0.7))
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            UIView.indicatorsProgress(30.12, textColor: .red)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            view.remove()
-        }
-    }
-
-    @objc private func viewProgressIndicatorTap(_ sender: UIButton) {
-        let view = self.view.progressIndicatorAdd()
-        view.trackLineWidth = 2
-        view.trackColor = UIColor(white: 248/255, alpha: 1)
-        view.progressLineWidth = 2
-        view.progressColor = .black
-        view.layer.cornerRadius = 32
-        view.backgroundColor = .clear
-        
-        view.progress = 0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            view.progress = 50.5
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                view.progress = 85.234
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    view.remove()
-                }
-            }
-        }
-    }
-
-    @objc private func viewProgressIndicatorDimTap(_ sender: UIButton) {
-        let view = UIView.progressIndicatorAdd(56, dimColor: UIColor(white: 0, alpha: 0.8))
-        view.trackLineWidth = 4
-        view.progressLineWidth = 4
-        view.trackColor = .blue
-        view.progressColor = .green
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            view.progress(30.12, decimalPlaces: 2, textColor: .red)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            view.remove()
-        }
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -411,14 +333,6 @@ class ViewController: UIViewController {
         print("20200621".format([4, 2, 2], separator: "."))
         self.end()
         
-        self.start("UIApplication+", "UIApplication.shared.currentViewController")
-        if let viewContoller = UIApplication.shared.currentViewController {
-            print(viewContoller)
-        } else {
-            print("nil")
-        }
-        self.end()
-        
         self.start("UIColor+", "UIColor(light: .black, dark: .white))")
         print(UIColor(light: .black, dark: .white))
         self.end()
@@ -483,13 +397,129 @@ class ViewController: UIViewController {
         print(UIFont.semiBoldSystemFont(ofSize: 17))
         self.end()
         
-        self.start("UIView+", "self.view.safe")
-        print(self.view.safe)
+        self.start("UIColor+", "UIColor.red.image(CGSize(width: 100, height: 50)")
+        if let image = UIColor.red.image(CGSize(width: 100, height: 50)) {
+            print(image)
+        } else {
+            print("nil")
+        }
         self.end()
         
-        self.start("UIViewController+", "self.safe")
-        print(self.safe)
+        self.start("UIImageView+", "self.imageView.imageFrame")
+        print(self.imageView.imageFrame)
         self.end()
     }
 }
 
+enum ActionType: String {
+    case originImage
+    case imageFixOrigin
+    case imageRotate
+    case imageResize
+    case imageResize2
+    case imageRepercentage
+    case imageColorRendering
+    case colorImage
+    case indicotor
+    case indicotorDim
+    case progressIndicotor
+    case progressIndicotorDim
+    
+    static var array: [ActionType] {
+        return [.originImage, .imageFixOrigin, .imageRotate, .imageResize, .imageResize2, .imageRepercentage, .imageColorRendering, .colorImage, .indicotor, .indicotorDim, .progressIndicotor, .progressIndicotorDim]
+    }
+}
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let type = self.array[indexPath.row]
+        if type == .originImage {
+            self.imageView.image = UIImage(named: "image.png")
+        } else if type == .imageFixOrigin {
+            self.imageView.image = self.imageView.image?.fixOrientation
+        } else if type == .imageRotate {
+            self.imageView.image = self.imageView.image?.rotate(radians: Float(90.degreesToRadians))
+        } else if type == .imageResize {
+            self.imageView.image = self.imageView.image?.resize(CGSize(width: 50, height: 50))
+        } else if type == .imageResize2 {
+            self.imageView.image = self.imageView.image?.resize(50)
+        } else if type == .imageRepercentage {
+            self.imageView.image = self.imageView.image?.repercentage(0.5)
+        } else if type == .imageColorRendering {
+            self.imageView.image = self.imageView.image?.colorRendering(.blue)
+        } else if type == .colorImage {
+            self.imageView.image = UIColor.green.image(CGSize(width: 100, height: 200))
+        } else if type == .indicotor {
+            let view = self.view.indicatorAdd(.blue)
+            
+            view.progress(0, textColor: .red)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                view.progress(50.3, textColor: .red)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    view.progress(80.5, textColor: .red)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        self.view.indicatorsRemove()
+                    }
+                }
+            }
+        } else if type == .indicotorDim {
+            let view = UIView.indicatorAdd(.red, dimColor: UIColor(white: 0, alpha: 0.7))
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                UIView.indicatorsProgress(30.12, textColor: .red)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                view.remove()
+            }
+        } else if type == .progressIndicotor {
+            let view = self.view.progressIndicatorAdd()
+            view.trackLineWidth = 2
+            view.trackColor = UIColor(white: 248/255, alpha: 1)
+            view.progressLineWidth = 2
+            view.progressColor = .black
+            view.layer.cornerRadius = 32
+            view.backgroundColor = .clear
+            
+            view.progress = 0
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                view.progress = 50.5
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    view.progress = 85.234
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        view.remove()
+                    }
+                }
+            }
+        } else if type == .progressIndicotorDim {
+            let view = UIView.progressIndicatorAdd(56, dimColor: UIColor(white: 0, alpha: 0.8))
+            view.trackLineWidth = 4
+            view.progressLineWidth = 4
+            view.trackColor = .blue
+            view.progressColor = .green
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                view.progress(30.12, decimalPlaces: 2, textColor: .red)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                view.remove()
+            }
+        }
+    }
+}
+
+extension ViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.array.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+        cell.textLabel?.text = self.array[indexPath.row].rawValue
+        return cell
+    }
+}

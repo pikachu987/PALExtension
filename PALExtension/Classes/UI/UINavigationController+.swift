@@ -20,30 +20,12 @@
 
 import UIKit
 
-public extension UIWindow {
-    var currentViewController: UIViewController? {
-        return self.currentViewController(viewController: self.rootViewController)
-    }
-
-    private func currentViewController(viewController: UIViewController?) -> UIViewController? {
-        if let viewController = viewController as? UINavigationController {
-            if let currentVC = viewController.visibleViewController {
-                return self.currentViewController(viewController: currentVC)
-            } else {
-                return viewController
-            }
-        } else if let viewController = viewController as? UITabBarController {
-            if let currentVC = viewController.selectedViewController {
-                return self.currentViewController(viewController: currentVC)
-            } else {
-                return viewController
-            }
-        } else {
-            if let currentVC = viewController?.presentedViewController {
-                return self.currentViewController(viewController: currentVC)
-            } else {
-                return viewController
-            }
-        }
+// completion
+public extension UINavigationController {
+    func pushViewController(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        self.pushViewController(viewController, animated: animated)
+        CATransaction.commit()
     }
 }

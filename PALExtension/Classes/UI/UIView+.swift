@@ -50,20 +50,6 @@ public extension UIView {
         }, completion: completion)
     }
 
-    var safe: SafeArea {
-        var safeArea = SafeArea()
-        if #available(iOS 11.0, *) {
-            guard let keyWindow = UIApplication.shared.keyWindow else { return safeArea }
-            safeArea.left = keyWindow.safeAreaInsets.left
-            safeArea.right = keyWindow.safeAreaInsets.right
-            safeArea.bottom = keyWindow.safeAreaInsets.bottom
-        }
-        safeArea.top = UIApplication.shared.statusBarFrame.height
-        let currentViewController = UIApplication.shared.currentViewController
-        safeArea.navigation = currentViewController?.navigationController?.navigationBar.frame.height ?? UINavigationController().navigationBar.frame.size.height
-        return safeArea
-    }
-
     // 라인 타입
     struct LineType: OptionSet {
         public let rawValue: Int

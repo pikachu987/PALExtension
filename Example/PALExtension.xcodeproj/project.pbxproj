@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1866D1A225B3BDCD00921674 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 1866D1A125B3BDCD00921674 /* image.png */; };
 		4377669C58EBDC2B91E1A045 /* Pods_PALExtension_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37067EA9F7EC61FCE6B76C20 /* Pods_PALExtension_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		00B61A763A70F551C7F3C67E /* Pods-PALExtension_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PALExtension_Example.release.xcconfig"; path = "Target Support Files/Pods-PALExtension_Example/Pods-PALExtension_Example.release.xcconfig"; sourceTree = "<group>"; };
+		1866D1A125B3BDCD00921674 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		1971E63F927A4C81EA39092D /* Pods-PALExtension_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PALExtension_Tests.release.xcconfig"; path = "Target Support Files/Pods-PALExtension_Tests/Pods-PALExtension_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		37067EA9F7EC61FCE6B76C20 /* Pods_PALExtension_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PALExtension_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D0CB27EFC574AE146A71F77 /* PALExtension.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = PALExtension.podspec; path = ../PALExtension.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -95,6 +97,7 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				1866D1A125B3BDCD00921674 /* image.png */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -248,6 +251,7 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				1866D1A225B3BDCD00921674 /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

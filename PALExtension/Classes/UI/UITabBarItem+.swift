@@ -27,12 +27,12 @@ public extension UITabBarItem {
         self.imageInsets = UIEdgeInsets.zero
         self.title = title
         if let color = color {
-            self.image = UIImage(named: imageName)?.rendering(color)
+            self.image = UIImage(named: imageName)?.colorRendering(color)
         } else {
             self.image = UIImage(named: imageName)
         }
         if let selectedColor = selectedColor {
-            self.selectedImage = UIImage(named: imageName)?.rendering(selectedColor)
+            self.selectedImage = UIImage(named: imageName)?.colorRendering(selectedColor)
         } else {
             self.selectedImage = UIImage(named: imageName)
         }
@@ -44,12 +44,12 @@ public extension UITabBarItem {
         self.imageInsets = UIEdgeInsets.zero
         self.title = title
         if let color = color {
-            self.image = image?.rendering(color)
+            self.image = image?.colorRendering(color)
         } else {
             self.image = image
         }
         if let selectedColor = selectedColor {
-            self.selectedImage = image?.rendering(selectedColor)
+            self.selectedImage = image?.colorRendering(selectedColor)
         } else {
             self.selectedImage = image
         }

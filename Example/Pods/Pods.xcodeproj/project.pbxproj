@@ -12,7 +12,6 @@
 		1866D07825B1CCCA00921674 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06325B1CCC900921674 /* UITableView+.swift */; };
 		1866D07925B1CCCA00921674 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06425B1CCCA00921674 /* UIColor+.swift */; };
 		1866D07A25B1CCCA00921674 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06525B1CCCA00921674 /* UIImage+.swift */; };
-		1866D07B25B1CCCA00921674 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06625B1CCCA00921674 /* UIApplication+.swift */; };
 		1866D07C25B1CCCA00921674 /* UISearchBar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06725B1CCCA00921674 /* UISearchBar+.swift */; };
 		1866D07D25B1CCCA00921674 /* UIDevice+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06825B1CCCA00921674 /* UIDevice+.swift */; };
 		1866D07E25B1CCCA00921674 /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06925B1CCCA00921674 /* UICollectionView+.swift */; };
@@ -27,8 +26,6 @@
 		1866D08725B1CCCB00921674 /* UIView+IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D07225B1CCCA00921674 /* UIView+IndicatorView.swift */; };
 		1866D08825B1CCCB00921674 /* UICollectionViewLayout+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D07325B1CCCA00921674 /* UICollectionViewLayout+.swift */; };
 		1866D08925B1CCCB00921674 /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D07425B1CCCA00921674 /* UILabel+.swift */; };
-		1866D08A25B1CCCB00921674 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D07525B1CCCA00921674 /* UIViewController+.swift */; };
-		1866D08B25B1CCCB00921674 /* UIWindow+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D07625B1CCCA00921674 /* UIWindow+.swift */; };
 		1866D08C25B1CCCB00921674 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D07725B1CCCA00921674 /* UIFont+.swift */; };
 		1866D09B25B1CCD100921674 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D09025B1CCD100921674 /* Double+.swift */; };
 		1866D09C25B1CCD100921674 /* NSObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D09125B1CCD100921674 /* NSObject+.swift */; };
@@ -43,6 +40,7 @@
 		1866D0A525B1CCD100921674 /* NSMutableAttributedString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D09A25B1CCD100921674 /* NSMutableAttributedString+.swift */; };
 		1866D0CD25B2922900921674 /* UIView+ProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D0CC25B2922900921674 /* UIView+ProgressIndicatorView.swift */; };
 		1866D0E825B31F2600921674 /* NSLayoutConstraint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D0E725B31F2600921674 /* NSLayoutConstraint+.swift */; };
+		1866D19425B33D3E00921674 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D19325B33D3E00921674 /* UINavigationController+.swift */; };
 		18812BF547885C5D2B9601A11ECC71DD /* Pods-PALExtension_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F78B493F900BCB7DCB54AAC7E5124A7F /* Pods-PALExtension_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		29EE142E0604238E4C8099E273F659B1 /* Pods-PALExtension_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CD89E0D42CEBEFB438160964BB74CE20 /* Pods-PALExtension_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DB5AC3F87CA3373BEF3A5D57C058A64 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
@@ -76,7 +74,6 @@
 		1866D06325B1CCC900921674 /* UITableView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
 		1866D06425B1CCCA00921674 /* UIColor+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		1866D06525B1CCCA00921674 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
-		1866D06625B1CCCA00921674 /* UIApplication+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		1866D06725B1CCCA00921674 /* UISearchBar+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISearchBar+.swift"; sourceTree = "<group>"; };
 		1866D06825B1CCCA00921674 /* UIDevice+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+.swift"; sourceTree = "<group>"; };
 		1866D06925B1CCCA00921674 /* UICollectionView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
@@ -91,8 +88,6 @@
 		1866D07225B1CCCA00921674 /* UIView+IndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+IndicatorView.swift"; sourceTree = "<group>"; };
 		1866D07325B1CCCA00921674 /* UICollectionViewLayout+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewLayout+.swift"; sourceTree = "<group>"; };
 		1866D07425B1CCCA00921674 /* UILabel+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
-		1866D07525B1CCCA00921674 /* UIViewController+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
-		1866D07625B1CCCA00921674 /* UIWindow+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIWindow+.swift"; sourceTree = "<group>"; };
 		1866D07725B1CCCA00921674 /* UIFont+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		1866D09025B1CCD100921674 /* Double+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		1866D09125B1CCD100921674 /* NSObject+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+.swift"; sourceTree = "<group>"; };
@@ -107,6 +102,7 @@
 		1866D09A25B1CCD100921674 /* NSMutableAttributedString+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+.swift"; sourceTree = "<group>"; };
 		1866D0CC25B2922900921674 /* UIView+ProgressIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ProgressIndicatorView.swift"; sourceTree = "<group>"; };
 		1866D0E725B31F2600921674 /* NSLayoutConstraint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+.swift"; sourceTree = "<group>"; };
+		1866D19325B33D3E00921674 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		1D7E955F32C701E8F380ADCAA3E987B0 /* PALExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PALExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		319C574A93442D327CA099B86C78F811 /* Pods_PALExtension_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PALExtension_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		38C432C3C887A46C00B72CDF6DD340BE /* Pods-PALExtension_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PALExtension_Example-Info.plist"; sourceTree = "<group>"; };
@@ -185,7 +181,6 @@
 			isa = PBXGroup;
 			children = (
 				1866D06A25B1CCCA00921674 /* UIAlertController+.swift */,
-				1866D06625B1CCCA00921674 /* UIApplication+.swift */,
 				1866D06925B1CCCA00921674 /* UICollectionView+.swift */,
 				1866D07325B1CCCA00921674 /* UICollectionViewLayout+.swift */,
 				1866D06425B1CCCA00921674 /* UIColor+.swift */,
@@ -204,9 +199,8 @@
 				1866D07025B1CCCA00921674 /* UIView+.swift */,
 				1866D07225B1CCCA00921674 /* UIView+IndicatorView.swift */,
 				1866D0CC25B2922900921674 /* UIView+ProgressIndicatorView.swift */,
-				1866D07525B1CCCA00921674 /* UIViewController+.swift */,
-				1866D07625B1CCCA00921674 /* UIWindow+.swift */,
 				1866D0E725B31F2600921674 /* NSLayoutConstraint+.swift */,
+				1866D19325B33D3E00921674 /* UINavigationController+.swift */,
 			);
 			name = UI;
 			path = PALExtension/Classes/UI;
@@ -504,13 +498,11 @@
 				1866D07825B1CCCA00921674 /* UITableView+.swift in Sources */,
 				1866D08925B1CCCB00921674 /* UILabel+.swift in Sources */,
 				1866D07925B1CCCA00921674 /* UIColor+.swift in Sources */,
-				1866D07B25B1CCCA00921674 /* UIApplication+.swift in Sources */,
 				1866D07D25B1CCCA00921674 /* UIDevice+.swift in Sources */,
 				1866D08025B1CCCA00921674 /* UIScrollView+.swift in Sources */,
 				1866D08425B1CCCA00921674 /* UITextField+.swift in Sources */,
 				1866D0A525B1CCD100921674 /* NSMutableAttributedString+.swift in Sources */,
 				1866D07F25B1CCCA00921674 /* UIAlertController+.swift in Sources */,
-				1866D08B25B1CCCB00921674 /* UIWindow+.swift in Sources */,
 				1866D0E825B31F2600921674 /* NSLayoutConstraint+.swift in Sources */,
 				1866D09C25B1CCD100921674 /* NSObject+.swift in Sources */,
 				1866D08225B1CCCA00921674 /* UIRefreshControl+.swift in Sources */,
@@ -524,9 +516,9 @@
 				1866D0A025B1CCD100921674 /* Float+.swift in Sources */,
 				C6FCA44A0E70736204B79809A98011DA /* PALExtension-dummy.m in Sources */,
 				1866D0CD25B2922900921674 /* UIView+ProgressIndicatorView.swift in Sources */,
-				1866D08A25B1CCCB00921674 /* UIViewController+.swift in Sources */,
 				1866D09D25B1CCD100921674 /* CGFloat+.swift in Sources */,
 				1866D0A425B1CCD100921674 /* Notification+.swift in Sources */,
+				1866D19425B33D3E00921674 /* UINavigationController+.swift in Sources */,
 				1866D08725B1CCCB00921674 /* UIView+IndicatorView.swift in Sources */,
 				1866D09E25B1CCD100921674 /* Dictionary+.swift in Sources */,
 				1866D0A225B1CCD100921674 /* String+.swift in Sources */,
@@ -605,7 +597,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;
@@ -834,7 +826,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;

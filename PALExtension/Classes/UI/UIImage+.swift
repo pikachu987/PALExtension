@@ -94,12 +94,7 @@ public extension UIImage {
         return scaledImage
     }
     
-    func rePercentage(_ percentage: CGFloat) -> UIImage {
-        guard let data = self.jpegData(compressionQuality: percentage) else { return UIImage() }
-        return UIImage(data: data) ?? UIImage()
-    }
-    
-    func resized(size: CGFloat = 1000, percent: CGFloat = 0.15, handler: @escaping ((UIImage) -> Void)) {
+    func resize(_ size: CGFloat, scale: CGFloat = 1, hasAlpha: Bool = false) -> UIImage? {
         var width: CGFloat = 0
         var height: CGFloat = 0
         if self.size.width > self.size.height {
@@ -109,14 +104,15 @@ public extension UIImage {
             height = size
             width = height*self.size.width/self.size.height
         }
-        DispatchQueue.global().async {
-            if let image = self.resize(CGSize(width: width, height: height))?.rePercentage(percent) {
-                DispatchQueue.main.async { handler(image) }
-            }
-        }
+        return self.resize(CGSize(width: width, height: height), scale: scale, hasAlpha: hasAlpha)
     }
     
-    func rendering(_ color: UIColor) -> UIImage? {
+    func repercentage(_ percentage: CGFloat) -> UIImage {
+        guard let data = self.jpegData(compressionQuality: percentage) else { return UIImage() }
+        return UIImage(data: data) ?? UIImage()
+    }
+    
+    func colorRendering(_ color: UIColor) -> UIImage? {
         let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
         if let context = UIGraphicsGetCurrentContext() {
@@ -133,5 +129,16 @@ public extension UIImage {
         let colorizedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return colorizedImage?.withRenderingMode(.alwaysOriginal)
+    }
+
+    func pixelColor(_ pos: CGPoint) -> UIColor {
+        guard let pixelData = self.cgImage?.dataProvider?.data else{ return .clear }
+        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        let pixelInfo: Int = ((Int(self.size.width) * Int(pos.y)) + Int(pos.x)) * 4
+        let r = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+        let g = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)
+        let b = CGFloat(data[pixelInfo+2]) / CGFloat(255.0)
+        let a = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
+        return UIColor(red: r, green: g, blue: b, alpha: a)
     }
 }

@@ -21,20 +21,6 @@
 import Foundation
 
 public extension Notification {
-    
-    typealias KeyboardSizes = (keyboard: CGRect, safearea: CGRect)
-
-    func keyboardSize(_ view: UIView) -> KeyboardSizes? {
-        guard let keyboardSize1 = ((self as NSNotification).userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return nil }
-        guard let keyboardSize2 = ((self as NSNotification).userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else { return nil }
-        let keyboardSize = keyboardSize1.height == 0 ? keyboardSize2 : keyboardSize1
-        var safeAreaSize = keyboardSize
-        if #available(iOS 11.0, *) {
-            safeAreaSize.size.height = safeAreaSize.height - view.safe.bottom
-        }
-        return (keyboard: keyboardSize, safearea: safeAreaSize)
-    }
-
     var duration: TimeInterval {
         guard let duration = self.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else { return 0.23 }
         return duration
