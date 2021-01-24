@@ -67,12 +67,12 @@ public extension UIView {
     struct LineType: OptionSet {
         public let rawValue: Int
 
-        static let top = LineType(rawValue: 1 << 0)
-        static let right = LineType(rawValue: 1 << 1)
-        static let bottom = LineType(rawValue: 1 << 2)
-        static let left = LineType(rawValue: 1 << 3)
+        static public let top = LineType(rawValue: 1 << 0)
+        static public let right = LineType(rawValue: 1 << 1)
+        static public let bottom = LineType(rawValue: 1 << 2)
+        static public let left = LineType(rawValue: 1 << 3)
 
-        static let all: LineType = [.top, .right, .bottom, .left]
+        static public let all: LineType = [.top, .right, .bottom, .left]
         
         public init(rawValue: Int) {
             self.rawValue = rawValue
@@ -80,12 +80,12 @@ public extension UIView {
     }
 
     @discardableResult
-    func addLineView(_ type: LineType, color: UIColor = UIColor(white: 224/255, alpha: 1), size: CGFloat = 1) -> UIView {
+    func addLineView(_ type: LineType, color: UIColor = UIColor(white: 224/255, alpha: 1), size: CGFloat = 1, paddingFirst: CGFloat = 0, paddingSecond: CGFloat = 0) -> UIView {
         if type.contains(.top) {
             let view = self.makeLineView(by: 102, color: color)
             self.addConstraints([
-                NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: paddingFirst),
+                NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: paddingSecond),
                 NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0)
                 ])
             view.addConstraint(NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: size))
@@ -93,8 +93,8 @@ public extension UIView {
         if type.contains(.right) {
             let view = self.makeLineView(by: 103, color: color)
             self.addConstraints([
-                NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: paddingFirst),
+                NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: paddingSecond),
                 NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0)
                 ])
             view.addConstraint(NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: size))
@@ -102,8 +102,8 @@ public extension UIView {
         if type.contains(.bottom) {
             let view = self.makeLineView(by: 104, color: color)
             self.addConstraints([
-                NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: paddingFirst),
+                NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: paddingSecond),
                 NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
                 ])
             view.addConstraint(NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: size))
@@ -111,8 +111,8 @@ public extension UIView {
         if type.contains(.left) {
             let view = self.makeLineView(by: 105, color: color)
             self.addConstraints([
-                NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: paddingFirst),
+                NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: paddingSecond),
                 NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0)
                 ])
             view.addConstraint(NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: size))
@@ -136,11 +136,15 @@ public extension UIView {
     }
 
     private func makeLineView(by tag: Int, color: UIColor) -> UIView {
-        let view = UIView()
+        let view = LineView()
         view.tag = tag
         view.backgroundColor = color
         self.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }
+    
+    class LineView: UIView {
+        
     }
 }
