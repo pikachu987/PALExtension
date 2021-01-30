@@ -141,4 +141,12 @@ public extension UIImage {
         let a = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
         return UIColor(red: r, green: g, blue: b, alpha: a)
     }
+
+    func crop(_ rect: CGRect, scale: CGFloat = 1) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: rect.size.width / scale, height: rect.size.height / scale), true, 0.0)
+        self.draw(at: CGPoint(x: -rect.origin.x / scale, y: -rect.origin.y / scale))
+        let croppedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return croppedImage
+    }
 }
