@@ -43,4 +43,58 @@ public extension UIScrollView {
     func scrollToBottom(_ animated: Bool = true) {
         self.setContentOffset(CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height), animated: animated)
     }
+    
+    func scrollFullEdgeZoom(_ imageView: UIImageView, height: CGFloat, animated: Bool = false) {
+        self.setZoomScale(1, animated: false)
+        let imageSize = imageView.imageFrame
+
+        let viewHeight = height
+        let viewWidth = UIScreen.main.bounds.width
+
+        let widthRate =  viewWidth / imageSize.width
+        let heightRate = viewHeight / imageSize.height
+
+        if widthRate < heightRate {
+            self.setZoomScale(heightRate, animated: animated)
+        } else {
+            self.setZoomScale(widthRate, animated: animated)
+        }
+        let xValue = self.contentSize.width/2 - self.bounds.size.width/2
+        let yValue = self.contentSize.height/2 - self.bounds.size.height/2
+        self.contentOffset = CGPoint(x: xValue, y: yValue)
+    }
+    
+    func scrollViewDidZoom(_ imageView: UIImageView, height: CGFloat) {
+        if self.zoomScale <= 1 {
+            let offsetX = max((self.bounds.width - self.contentSize.width) * 0.5, 0)
+            let offsetY = max((self.bounds.height - self.contentSize.height) * 0.5, 0)
+            self.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: 0, right: 0)
+        } else {
+            let imageSize = imageView.imageFrame
+
+            let viewHeight = height
+            let viewWidth = UIScreen.main.bounds.width
+
+            let widthRate =  viewWidth / imageSize.width
+            let heightRate = viewHeight / imageSize.height
+
+            if widthRate < heightRate {
+                let imageOffset = -imageSize.origin.y
+                let scrollOffset = (self.bounds.height - self.contentSize.height) * 0.5
+                if imageOffset > scrollOffset {
+                    self.contentInset = UIEdgeInsets(top: imageOffset, left: 0, bottom: imageOffset, right: 0)
+                } else {
+                    self.contentInset = UIEdgeInsets(top: scrollOffset, left: 0, bottom: scrollOffset, right: 0)
+                }
+            } else {
+                let imageOffset = -imageSize.origin.x
+                let scrollOffset = (self.bounds.width - self.contentSize.width) * 0.5
+                if imageOffset > scrollOffset {
+                    self.contentInset = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: imageOffset)
+                } else {
+                    self.contentInset = UIEdgeInsets(top: 0, left: scrollOffset, bottom: 0, right: scrollOffset)
+                }
+            }
+        }
+    }
 }
