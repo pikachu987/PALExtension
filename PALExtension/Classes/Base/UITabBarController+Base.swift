@@ -26,6 +26,15 @@ extension UITabBarController {
         private(set) open var isAppear = false
         private(set) open var isShowKeyboard = false
 
+        public var statusBarHidden = false
+        open override var prefersStatusBarHidden: Bool {
+            return self.statusBarHidden
+        }
+        
+        open override var preferredStatusBarStyle: UIStatusBarStyle {
+            return .default
+        }
+
         open override func viewDidLoad() {
             super.viewDidLoad()
 

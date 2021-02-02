@@ -26,6 +26,11 @@ extension UINavigationController {
         private(set) open var isAppear = false
         private(set) open var isShowKeyboard = false
         
+        public var statusBarHidden = false
+        open override var prefersStatusBarHidden: Bool {
+            return self.statusBarHidden
+        }
+        
         open override var preferredStatusBarStyle: UIStatusBarStyle {
             if let alertController = self.visibleViewController as? UIAlertController {
                 if let navigationController = alertController.presentingViewController as? UINavigationController {
@@ -34,19 +39,19 @@ extension UINavigationController {
                     } else if let viewController = navigationController.topViewController {
                         return viewController.preferredStatusBarStyle
                     } else {
-                        return .lightContent
+                        return .default
                     }
                 } else if let viewController = alertController.presentingViewController {
                     return viewController.preferredStatusBarStyle
                 } else {
-                    return .lightContent
+                    return .default
                 }
             } else if let tabBarController = self.visibleViewController as? UITabBarController {
                 return tabBarController.selectedViewController?.preferredStatusBarStyle ?? .lightContent
             } else if let viewController = self.visibleViewController {
                 return viewController.preferredStatusBarStyle
             } else {
-                return .lightContent
+                return .default
             }
         }
 
@@ -61,6 +66,7 @@ extension UINavigationController {
             super.viewDidLoad()
 
             self.view.backgroundColor = UIApplication.shared.currentWindow?.backgroundColor
+            self.navigationBar.isTranslucent = false
             self.initViews()
         }
         

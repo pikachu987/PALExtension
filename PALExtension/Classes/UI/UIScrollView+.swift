@@ -44,6 +44,17 @@ public extension UIScrollView {
         self.setContentOffset(CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height), animated: animated)
     }
     
+    func currentIndex(_ arraySize: Int) -> Int? {
+        if arraySize != 0 && self.deltaOffsetX != 0 && self.frame.size.width != 0 {
+            let index =  CGFloat(arraySize) - self.deltaOffsetX/self.frame.size.width - 1
+            let cIndex = Int(round(index))
+            if cIndex >= 0 && cIndex < arraySize {
+                return cIndex
+            }
+        }
+        return nil
+    }
+    
     func scrollFullEdgeZoom(_ imageView: UIImageView, height: CGFloat, animated: Bool = false) {
         self.setZoomScale(1, animated: false)
         let imageSize = imageView.imageFrame
