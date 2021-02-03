@@ -87,7 +87,7 @@ public extension UIView {
     }
 
     @discardableResult
-    func addLineView(_ type: LineType, color: UIColor = UIColor(white: 224/255, alpha: 1), size: CGFloat = 1, paddingFirst: CGFloat = 0, paddingSecond: CGFloat = 0) -> UIView {
+    func addLineView(_ type: LineType, color: UIColor = UIColor(white: 224/255, alpha: 1), size: CGFloat = 0.8, paddingFirst: CGFloat = 0, paddingSecond: CGFloat = 0) -> UIView {
         if type.contains(.top) {
             let view = self.makeLineView(by: 102, color: color)
             self.addConstraints([

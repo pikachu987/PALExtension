@@ -10,6 +10,7 @@
 		0214DC9B9D4DE8D11966E175592281BE /* PALExtension-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 430E73A053D5873C82A2FD347219F516 /* PALExtension-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		146F2D54EF34AA47999A439807DC1776 /* Pods-PALExtension_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D7692992AB003851F5098DF055058725 /* Pods-PALExtension_Example-dummy.m */; };
 		182D1B9825C5BE190097ABCD /* UIView+PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182D1B9725C5BE190097ABCD /* UIView+PopupView.swift */; };
+		182D1CA225CAEA230097ABCD /* UIView+CenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182D1CA125CAEA230097ABCD /* UIView+CenterView.swift */; };
 		1866D07825B1CCCA00921674 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06325B1CCC900921674 /* UITableView+.swift */; };
 		1866D07925B1CCCA00921674 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06425B1CCCA00921674 /* UIColor+.swift */; };
 		1866D07A25B1CCCA00921674 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06525B1CCCA00921674 /* UIImage+.swift */; };
@@ -89,6 +90,7 @@
 		0AC0B51B3E0AD77EEBA2FBAE9C4991AE /* Pods-PALExtension_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PALExtension_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		17B085186CC276623D3ED40DBEEB4634 /* PALExtension.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = PALExtension.modulemap; sourceTree = "<group>"; };
 		182D1B9725C5BE190097ABCD /* UIView+PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+PopupView.swift"; sourceTree = "<group>"; };
+		182D1CA125CAEA230097ABCD /* UIView+CenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+CenterView.swift"; sourceTree = "<group>"; };
 		1866D06325B1CCC900921674 /* UITableView+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+.swift"; sourceTree = "<group>"; };
 		1866D06425B1CCCA00921674 /* UIColor+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		1866D06525B1CCCA00921674 /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				1866D07125B1CCCA00921674 /* UITextView+.swift */,
 				1866D1D325B3D64900921674 /* UIViewController+.swift */,
 				1866D07025B1CCCA00921674 /* UIView+.swift */,
+				182D1CA125CAEA230097ABCD /* UIView+CenterView.swift */,
 				1866D07225B1CCCA00921674 /* UIView+IndicatorView.swift */,
 				1866D0CC25B2922900921674 /* UIView+ProgressIndicatorView.swift */,
 				1866D1B525B3CE1B00921674 /* UIView+ShadowView.swift */,
@@ -557,6 +560,7 @@
 				1866D08125B1CCCA00921674 /* UIImageView+.swift in Sources */,
 				1866D07825B1CCCA00921674 /* UITableView+.swift in Sources */,
 				1866D1DB25B3D64900921674 /* UIApplication+.swift in Sources */,
+				182D1CA225CAEA230097ABCD /* UIView+CenterView.swift in Sources */,
 				1866D08925B1CCCB00921674 /* UILabel+.swift in Sources */,
 				1866D07925B1CCCA00921674 /* UIColor+.swift in Sources */,
 				1866D1DE25B3D64900921674 /* UIViewController+Base.swift in Sources */,
@@ -674,7 +678,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.10;
+				MARKETING_VERSION = 0.1.11;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;
@@ -903,7 +907,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.10;
+				MARKETING_VERSION = 0.1.11;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;
