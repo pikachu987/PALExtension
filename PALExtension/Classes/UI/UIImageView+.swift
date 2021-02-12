@@ -38,4 +38,29 @@ public extension UIImageView {
             return CGRect(x: 0, y: topLeftY, width: imageViewSize.width, height: height)
         }
     }
+    
+    enum DrawType {
+        case draw, clear
+    }
+    
+    func draw(_ type: DrawType, from: CGPoint, to: CGPoint, size: CGFloat, color: UIColor = .clear) {
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0)
+        self.image?.draw(in: self.bounds)
+        let context = UIGraphicsGetCurrentContext()
+        context?.move(to: from)
+        context?.addLine(to: to)
+        context?.setLineCap(CGLineCap.round)
+        if type == .draw {
+            context?.setLineWidth(size)
+            context?.setStrokeColor(red: color.red, green: color.green, blue: color.blue, alpha: 1.0)
+            context?.setBlendMode(.normal)
+        } else if type == .clear {
+            context?.setLineWidth(size)
+            context?.setStrokeColor(red: UIColor.clear.red, green: UIColor.clear.green, blue: UIColor.clear.blue, alpha: 1.0)
+            context?.setBlendMode(.clear)
+        }
+        context?.strokePath()
+        self.image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+    }
 }
