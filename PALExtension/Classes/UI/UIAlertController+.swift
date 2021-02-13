@@ -157,6 +157,9 @@ public extension UIAlertController {
             datePicker.locale = NSLocale(localeIdentifier: locale) as Locale
         }
         datePicker.datePickerMode = .date
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        }
         
         handler?(datePicker)
         view.addSubview(datePicker)
@@ -174,6 +177,37 @@ public extension UIAlertController {
     
     @discardableResult
     func show(_ viewController: UIViewController?) -> UIAlertController {
+        if self.preferredStyle == .actionSheet {
+            if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
+                if let popoverController = self.popoverPresentationController {
+                    if let viewController = viewController {
+                        popoverController.sourceView = viewController.view
+                        popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0)
+                    }
+                    popoverController.permittedArrowDirections = []
+                }
+            }
+        }
+        DispatchQueue.main.async {
+            viewController?.present(self, animated: true, completion: nil)
+        }
+        return self
+    }
+    
+    @discardableResult
+    func show() -> UIAlertController {
+        let viewController = UIApplication.shared.currentWindow?.rootViewController
+        if self.preferredStyle == .actionSheet {
+            if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
+                if let popoverController = self.popoverPresentationController {
+                    if let viewController = viewController {
+                        popoverController.sourceView = viewController.view
+                        popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0)
+                    }
+                    popoverController.permittedArrowDirections = []
+                }
+            }
+        }
         DispatchQueue.main.async {
             viewController?.present(self, animated: true, completion: nil)
         }
