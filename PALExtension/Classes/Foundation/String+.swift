@@ -172,19 +172,6 @@ public extension String {
         return result
     }
     
-    private func htmlURLText(_ linkType: URLLinkType) -> String {
-        var text = self
-        if linkType == .onlyHead {
-            let components = text.components(separatedBy: "<body")
-            text = components.first ?? ""
-        } else if linkType == .onlyBody {
-            let components = text.components(separatedBy: "<body")
-            text = components.last ?? ""
-        }
-        text = text.replacingOccurrences(of: "\\s", with: "", options: .regularExpression).trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: " ").replacingOccurrences(of: "'", with: " ").replacingOccurrences(of: "`", with: " ").replacingOccurrences(of: "<", with: " < ").replacingOccurrences(of: ">", with: " > ").replacingOccurrences(of: "http", with: " http")
-        return text
-    }
-    
     func matches(regex: String) -> [String] {
         do {
             let regex = try NSRegularExpression(pattern: regex, options: .caseInsensitive)
@@ -198,45 +185,6 @@ public extension String {
         }
     }
     
-    func urlLink(_ linkType: URLLinkType = .onlyBody, handler: ((String) -> Void)) {
-        let regex = "http+\\S://+\\S+\\.+\\S+(\\?\\S+)?"
-        self.htmlURLText(linkType).matches(regex: regex).forEach({ handler($0) })
-    }
-    
-    func urlLink(_ linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default) -> [String] {
-        var links = [String]()
-        self.urlLink(linkType) { (matchString) in
-            if regex == .overlapUse {
-                links.append(matchString)
-            } else {
-                if !links.contains(matchString) {
-                    links.append(matchString)
-                }
-            }
-        }
-        return links
-    }
-    
-    func imageUrlLink(_ linkType: URLLinkType = .onlyBody, ext: [String] = ["jpeg", "jpg", "png", "gif", "svg"], handler: ((String) -> Void)) {
-        var regex = "http+\\S?://+\\S+"
-        regex.append("(\(ext.compactMap({ "\\.\($0)" }).joined(separator: "|")))")
-        self.htmlURLText(linkType).matches(regex: regex).forEach({ handler($0) })
-    }
-    
-    func imageUrlLink(_ linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default, ext: [String] = ["jpeg", "jpg", "png", "gif", "svg"]) -> [String] {
-        var links = [String]()
-        self.imageUrlLink(linkType, ext: ext) { (matchString) in
-            if regex == .overlapUse {
-                links.append(matchString)
-            } else {
-                if !links.contains(matchString) {
-                    links.append(matchString)
-                }
-            }
-        }
-        return links
-    }
-    
     enum URLLinkRegex {
         case `default`
         case overlapUse
@@ -246,5 +194,97 @@ public extension String {
         case all
         case onlyHead
         case onlyBody
+    }
+    
+    private func htmlURLText(_ url: URL? = nil, linkType: URLLinkType) -> String {
+        var text = self
+        if linkType == .onlyHead {
+            let components = text.components(separatedBy: "<body")
+            text = components.first ?? ""
+        } else if linkType == .onlyBody {
+            let components = text.components(separatedBy: "<body")
+            text = components.last ?? ""
+        }
+        text = text.replacingOccurrences(of: "\\s", with: " ", options: .regularExpression).trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: " ").replacingOccurrences(of: "'", with: " ").replacingOccurrences(of: "`", with: " ").replacingOccurrences(of: "<", with: " < ").replacingOccurrences(of: ">", with: " > ").replacingOccurrences(of: "http", with: " http")
+        if let url = url {
+            if let scheme = url.scheme {
+                text = text.replacingOccurrences(of: "=\"//", with: "=\"\(scheme)://")
+            }
+            if let scheme = url.scheme, let host = url.host {
+                text = text.replacingOccurrences(of: "=\"/", with: "=\"\(scheme)://\(host)/")
+            }
+        }
+        return text
+    }
+    
+    private func htmlTagText(_ url: URL? = nil, linkType: URLLinkType) -> String {
+        var text = self
+        if linkType == .onlyHead {
+            let components = text.components(separatedBy: "<body")
+            text = components.first ?? ""
+        } else if linkType == .onlyBody {
+            let components = text.components(separatedBy: "<body")
+            text = components.last ?? ""
+        }
+        text = text.replacingOccurrences(of: "\\s", with: "", options: .regularExpression).trimmingCharacters(in: .whitespacesAndNewlines)
+        if let url = url {
+            if let scheme = url.scheme {
+                text = text.replacingOccurrences(of: "=\"//", with: "=\"\(scheme)://")
+            }
+            if let scheme = url.scheme, let host = url.host {
+                text = text.replacingOccurrences(of: "=\"/", with: "=\"\(scheme)://\(host)/")
+            }
+        }
+        return text
+    }
+    
+    func urlLink(_ url: URL? = nil, linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default) -> [String] {
+        let reg = "http+\\S?://+\\S+\\.+\\S+(\\?\\S+)?"
+        var links = [String]()
+        self.htmlURLText(url, linkType: linkType).matches(regex: reg).forEach({
+            if regex == .overlapUse {
+                links.append($0)
+            } else {
+                if !links.contains($0) {
+                    links.append($0)
+                }
+            }
+        })
+        return links
+    }
+    
+    func imgTagURLLink(_ url: URL? = nil, linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default) -> [String] {
+        let reg = "<img[^>]*>"
+        var links = [String]()
+        self.htmlTagText(url, linkType: linkType).matches(regex: reg).forEach({
+            var path = $0.components(separatedBy: "src=\"").last?.components(separatedBy: "\"").first ?? ""
+            if path.contains("src=") {
+                path = $0.components(separatedBy: "src='").last?.components(separatedBy: "'").first ?? ""
+            }
+            if regex == .overlapUse {
+                links.append(path)
+            } else {
+                if !links.contains(path) {
+                    links.append(path)
+                }
+            }
+        })
+        return links
+    }
+
+    func imgURLLink(_ url: URL? = nil, linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default, ext: [String] = ["jpeg", "jpg", "png", "gif", "svg"]) -> [String] {
+        var reg = "http+\\S?://+\\S+"
+        reg.append("(\(ext.compactMap({ "\\.\($0)" }).joined(separator: "|")))")
+        var links = [String]()
+        self.htmlURLText(url, linkType: linkType).matches(regex: reg).forEach({
+            if regex == .overlapUse {
+                links.append($0)
+            } else {
+                if !links.contains($0) {
+                    links.append($0)
+                }
+            }
+        })
+        return links
     }
 }

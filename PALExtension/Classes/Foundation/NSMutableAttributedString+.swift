@@ -55,7 +55,7 @@ public extension NSAttributedString {
     
     func urlLink(_ color: UIColor, handler: @escaping (([NSAttributedString.Key : Any], NSRange) -> Void)) {
         let text = self.string
-        text.urlLink { (url) in
+        text.urlLink(linkType: .all, regex: .overlapUse).forEach { (url) in
             if let range = text.range(of: url) {
                 text.enumerateSubstrings(in: range, options: String.EnumerationOptions.bySentences) {
                     (substring, substringRange, _, _) in

@@ -71,6 +71,8 @@ class ViewController: UIViewController.Base {
         self.indicatorButton.addTarget(self, action: #selector(self.indicatorTap(_:)), for: .touchUpInside)
         
         self.test()
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "test", style: .plain, target: self, action: #selector(self.testTap(_:)))
     }
     
     override func didReceiveMemoryWarning() {
@@ -113,6 +115,24 @@ class ViewController: UIViewController.Base {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 sender.hideIndicator()
             }
+        }
+    }
+    
+    @objc private func testTap(_ sender: UIBarButtonItem) {
+        let urlPath = ""
+        guard let url = URL(string: urlPath) else { return }
+        guard let data = try? Data(contentsOf: url) else { return }
+        guard let html = String(data: data, encoding: .utf8) else { return }
+        let imageUrls = html.imgURLLink(url, linkType: .onlyBody, regex: .default)
+        print(imageUrls.count)
+        imageUrls.forEach { (imagePath) in
+            print("👉\(imagePath)")
+        }
+        
+        let imageUrls2 = html.imgTagURLLink(url, linkType: .onlyBody, regex: .default)
+        print(imageUrls2.count)
+        imageUrls2.forEach { (imagePath) in
+            print("👉\(imagePath)")
         }
     }
 
@@ -388,9 +408,9 @@ class ViewController: UIViewController.Base {
         self.end()
         
         self.start("String+", "\"http://www.naver.com ~~!@!@#!#@!#@!#!@dsafifdsaoifd http://www.google.com adifsafajisdf\".urlLink")
-        "http://www.naver.com ~~!@!@#!#@!#@!#!@dsafifdsaoifd http://www.google.com adifsafajisdf http://www.naver.com".urlLink { (url) in
-            print(url)
-        }
+        "http://www.naver.com ~~!@!@#!#@!#@!#!@dsafifdsaoifd http://www.google.com adifsafajisdf http://www.naver.com".urlLink().forEach({
+            print($0)
+        })
         self.end()
         
         self.start("String+", "\"01012341234\".format([3, 4, 4], separator: \"-\")")
