@@ -214,6 +214,7 @@ public extension String {
                 text = text.replacingOccurrences(of: "=\"/", with: "=\"\(scheme)://\(host)/")
             }
         }
+        text = text.replacingOccurrences(of: "\\/", with: "/")
         return text
     }
     
@@ -235,6 +236,7 @@ public extension String {
                 text = text.replacingOccurrences(of: "=\"/", with: "=\"\(scheme)://\(host)/")
             }
         }
+        text = text.replacingOccurrences(of: "\\/", with: "/")
         return text
     }
     
