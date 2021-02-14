@@ -142,21 +142,6 @@ public extension String {
             return []
         }
     }
-    
-    func urlLink(_ handler: ((String) -> Void)) {
-        do {
-            let text = self.replacingOccurrences(of: "[\\U00010000-\\U0010FFFF]", with: "", options: String.CompareOptions.regularExpression, range: nil)
-            let mentionExpression = try NSRegularExpression(pattern: "http?://([-\\w\\.]+)+(:\\d+)?(/([\\w/_\\.]*(\\?\\S+)?)?)?", options: .caseInsensitive)
-            let matches = mentionExpression.matches(in: text, options: .init(rawValue: 0), range: NSMakeRange(0, text.count))
-            for match in matches {
-                let range = match.range
-                let matchString = text.substring(from: range.location, length: range.length)
-                if !(matchString.lowercased().hasSuffix(".png") || matchString.lowercased().hasSuffix(".jpg") || matchString.lowercased().hasSuffix(".jpeg") || matchString.lowercased().hasSuffix(".gif")) {
-                    handler(matchString)
-                }
-            }
-        } catch { }
-    }
 
     func format(_ digits: [Int], separator: String, isRemainder: Bool = false) -> String {
         let text = self
@@ -185,5 +170,81 @@ public extension String {
             result.append("\(remainderText)")
         }
         return result
+    }
+    
+    private func htmlURLText(_ linkType: URLLinkType) -> String {
+        var text = self
+        if linkType == .onlyHead {
+            let components = text.components(separatedBy: "<body")
+            text = components.first ?? ""
+        } else if linkType == .onlyBody {
+            let components = text.components(separatedBy: "<body")
+            text = components.last ?? ""
+        }
+        text = text.replacingOccurrences(of: "\\s", with: "", options: .regularExpression).trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: " ").replacingOccurrences(of: "'", with: " ").replacingOccurrences(of: "`", with: " ").replacingOccurrences(of: "<", with: " < ").replacingOccurrences(of: ">", with: " > ").replacingOccurrences(of: "http", with: " http")
+        return text
+    }
+    
+    func matches(regex: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: regex, options: .caseInsensitive)
+            let results = regex.matches(in: self, options: .init(rawValue: 0), range: NSRange(location: 0, length: self.count))
+            return results.map {
+                let range = $0.range
+                return self.substring(from: range.location, length: range.length)
+            }
+        } catch {
+            return []
+        }
+    }
+    
+    func urlLink(_ linkType: URLLinkType = .onlyBody, handler: ((String) -> Void)) {
+        let regex = "http+\\S://+\\S+\\.+\\S+(\\?\\S+)?"
+        self.htmlURLText(linkType).matches(regex: regex).forEach({ handler($0) })
+    }
+    
+    func urlLink(_ linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default) -> [String] {
+        var links = [String]()
+        self.urlLink(linkType) { (matchString) in
+            if regex == .overlapUse {
+                links.append(matchString)
+            } else {
+                if !links.contains(matchString) {
+                    links.append(matchString)
+                }
+            }
+        }
+        return links
+    }
+    
+    func imageUrlLink(_ linkType: URLLinkType = .onlyBody, ext: [String] = ["jpeg", "jpg", "png", "gif", "svg"], handler: ((String) -> Void)) {
+        var regex = "http+\\S?://+\\S+"
+        regex.append("(\(ext.compactMap({ "\\.\($0)" }).joined(separator: "|")))")
+        self.htmlURLText(linkType).matches(regex: regex).forEach({ handler($0) })
+    }
+    
+    func imageUrlLink(_ linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default, ext: [String] = ["jpeg", "jpg", "png", "gif", "svg"]) -> [String] {
+        var links = [String]()
+        self.imageUrlLink(linkType, ext: ext) { (matchString) in
+            if regex == .overlapUse {
+                links.append(matchString)
+            } else {
+                if !links.contains(matchString) {
+                    links.append(matchString)
+                }
+            }
+        }
+        return links
+    }
+    
+    enum URLLinkRegex {
+        case `default`
+        case overlapUse
+    }
+    
+    enum URLLinkType {
+        case all
+        case onlyHead
+        case onlyBody
     }
 }
