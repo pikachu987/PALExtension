@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0214DC9B9D4DE8D11966E175592281BE /* PALExtension-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 430E73A053D5873C82A2FD347219F516 /* PALExtension-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		146F2D54EF34AA47999A439807DC1776 /* Pods-PALExtension_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D7692992AB003851F5098DF055058725 /* Pods-PALExtension_Example-dummy.m */; };
+		165BB17225DF4A5500FE40FD /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BB17125DF4A5500FE40FD /* Debounce.swift */; };
+		165BB17725DF4A6200FE40FD /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BB17625DF4A6200FE40FD /* Throttle.swift */; };
 		182D1B9825C5BE190097ABCD /* UIView+PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182D1B9725C5BE190097ABCD /* UIView+PopupView.swift */; };
 		182D1CA225CAEA230097ABCD /* UIView+CenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182D1CA125CAEA230097ABCD /* UIView+CenterView.swift */; };
 		1866D07825B1CCCA00921674 /* UITableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1866D06325B1CCC900921674 /* UITableView+.swift */; };
@@ -88,6 +90,8 @@
 /* Begin PBXFileReference section */
 		008DEA6D10DFD7D1A9552F709FDF8A3F /* Pods-PALExtension_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PALExtension_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		0AC0B51B3E0AD77EEBA2FBAE9C4991AE /* Pods-PALExtension_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PALExtension_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		165BB17125DF4A5500FE40FD /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
+		165BB17625DF4A6200FE40FD /* Throttle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttle.swift; sourceTree = "<group>"; };
 		17B085186CC276623D3ED40DBEEB4634 /* PALExtension.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = PALExtension.modulemap; sourceTree = "<group>"; };
 		182D1B9725C5BE190097ABCD /* UIView+PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+PopupView.swift"; sourceTree = "<group>"; };
 		182D1CA125CAEA230097ABCD /* UIView+CenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+CenterView.swift"; sourceTree = "<group>"; };
@@ -282,6 +286,8 @@
 				1866D1C825B3D64800921674 /* UICollectionView+Base.swift */,
 				1866D1D225B3D64900921674 /* UITableView+Base.swift */,
 				1866D20A25B3DCD900921674 /* UIScrollView+Base.swift */,
+				165BB17125DF4A5500FE40FD /* Debounce.swift */,
+				165BB17625DF4A6200FE40FD /* Throttle.swift */,
 			);
 			name = Base;
 			path = PALExtension/Classes/Base;
@@ -567,6 +573,7 @@
 				1866D07D25B1CCCA00921674 /* UIDevice+.swift in Sources */,
 				1866D1E225B3D64900921674 /* UIViewController+.swift in Sources */,
 				1866D1E825B3D67300921674 /* UITextView+PlaceholderTextView.swift in Sources */,
+				165BB17225DF4A5500FE40FD /* Debounce.swift in Sources */,
 				1866D1D725B3D64900921674 /* UICollectionView+Base.swift in Sources */,
 				1866D1E325B3D64900921674 /* UIWindow+.swift in Sources */,
 				1866D08025B1CCCA00921674 /* UIScrollView+.swift in Sources */,
@@ -576,6 +583,7 @@
 				1866D07F25B1CCCA00921674 /* UIAlertController+.swift in Sources */,
 				1866D1AE25B3CB4300921674 /* UITableViewCell+.swift in Sources */,
 				1866D0E825B31F2600921674 /* NSLayoutConstraint+.swift in Sources */,
+				165BB17725DF4A6200FE40FD /* Throttle.swift in Sources */,
 				1866D21D25B3FC6600921674 /* UITextView+DynamicTextView.swift in Sources */,
 				1866D09C25B1CCD100921674 /* NSObject+.swift in Sources */,
 				1866D08225B1CCCA00921674 /* UIRefreshControl+.swift in Sources */,
@@ -678,7 +686,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.16;
+				MARKETING_VERSION = 0.1.17;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;
@@ -907,7 +915,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.16;
+				MARKETING_VERSION = 0.1.17;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;

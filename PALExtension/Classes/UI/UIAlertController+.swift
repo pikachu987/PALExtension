@@ -20,16 +20,16 @@
 
 import UIKit
 
-public extension UIAlertController {
+extension UIAlertController {
     
-    var textView: UITextView? {
+    @objc open var textView: UITextView? {
         guard let contentViewController = self.value(forKey: "contentViewController") as? UIViewController else { return nil }
         if contentViewController.view == nil { return nil }
         guard let textView = contentViewController.view.subviews.compactMap({ $0 as? UITextView }).first else { return nil }
         return textView
     }
     
-    var datePicker: UIDatePicker? {
+    @objc open var datePicker: UIDatePicker? {
         guard let contentViewController = self.value(forKey: "contentViewController") as? UIViewController else { return nil }
         if contentViewController.view == nil { return nil }
         guard let datePicker = contentViewController.view.subviews.compactMap({ $0 as? UIDatePicker }).first else { return nil }
@@ -37,26 +37,26 @@ public extension UIAlertController {
     }
     
     @discardableResult
-    static func alert(_ title: String? = "", message: String?) -> UIAlertController {
+    @objc open class func alert(_ title: String? = "", message: String?) -> UIAlertController {
         return UIAlertController(title: title, message: message, preferredStyle: .alert)
     }
     
     @discardableResult
-    static func alert(_ title: String? = "", message: String?, cancelString: String, cancelHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open class func alert(_ title: String? = "", message: String?, cancelString: String, cancelHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return UIAlertController
             .alert(title, message: message)
             .cancel(cancelString, handler: cancelHandler)
     }
     
     @discardableResult
-    static func alert(_ title: String? = "", message: String?, defaultString: String, defaultHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open class func alert(_ title: String? = "", message: String?, defaultString: String, defaultHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return UIAlertController
             .alert(title, message: message)
             .add(defaultString, handler: defaultHandler)
     }
     
     @discardableResult
-    static func alert(_ title: String? = "", message: String?, defaultString: String, cancelString: String, defaultHandler: @escaping ((UIAlertController) -> Void), cancelHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open class func alert(_ title: String? = "", message: String?, defaultString: String, cancelString: String, defaultHandler: @escaping ((UIAlertController) -> Void), cancelHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return UIAlertController
             .alert(title, message: message)
             .cancel(cancelString, handler: cancelHandler)
@@ -64,26 +64,26 @@ public extension UIAlertController {
     }
     
     @discardableResult
-    static func sheet(_ title: String? = "", message: String?) -> UIAlertController {
+    @objc open class func sheet(_ title: String? = "", message: String?) -> UIAlertController {
         return UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
     }
     
     @discardableResult
-    static func sheet(_ title: String? = "", message: String?, cancelString: String, cancelHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open class func sheet(_ title: String? = "", message: String?, cancelString: String, cancelHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return UIAlertController
             .sheet(title, message: message)
             .cancel(cancelString, handler: cancelHandler)
     }
     
     @discardableResult
-    static func sheet(_ title: String? = "", message: String?, defaultString: String, defaultHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open class func sheet(_ title: String? = "", message: String?, defaultString: String, defaultHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return UIAlertController
             .sheet(title, message: message)
             .add(defaultString, handler: defaultHandler)
     }
     
     @discardableResult
-    static func sheet(_ title: String? = "", message: String?, defaultString: String, cancelString: String, defaultHandler: @escaping ((UIAlertController) -> Void), cancelHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open class func sheet(_ title: String? = "", message: String?, defaultString: String, cancelString: String, defaultHandler: @escaping ((UIAlertController) -> Void), cancelHandler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return UIAlertController
             .sheet(title, message: message)
             .cancel(cancelString, handler: cancelHandler)
@@ -98,22 +98,22 @@ public extension UIAlertController {
     }
     
     @discardableResult
-    func add(_ title: String?, handler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open func add(_ title: String?, handler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return self.action(title, style: .default, handler: handler)
     }
     
     @discardableResult
-    func cancel(_ title: String?, handler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open func cancel(_ title: String?, handler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return self.action(title, style: .cancel, handler: handler)
     }
     
     @discardableResult
-    func destructive(_ title: String?, handler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
+    @objc open func destructive(_ title: String?, handler: ((UIAlertController) -> Void)? = nil) -> UIAlertController {
         return self.action(title, style: .destructive, handler: handler)
     }
     
     @discardableResult
-    func appendTextField(_ handler: ((UITextField) -> Void)? = nil) -> UIAlertController {
+    @objc open func appendTextField(_ handler: ((UITextField) -> Void)? = nil) -> UIAlertController {
         self.addTextField { (textField) in
             handler?(textField)
         }
@@ -121,7 +121,7 @@ public extension UIAlertController {
     }
     
     @discardableResult
-    func appendTextView(_ textView: UITextView? = nil, handler: ((UITextView) -> Void)? = nil) -> UIAlertController {
+    @objc open func appendTextView(_ textView: UITextView? = nil, handler: ((UITextView) -> Void)? = nil) -> UIAlertController {
         let textViewController = UIViewController()
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         var textView = textView
@@ -148,7 +148,7 @@ public extension UIAlertController {
     }
     
     @discardableResult
-    func appendDatePicker(_ handler: ((UIDatePicker) -> Void)? = nil) -> UIAlertController {
+    @objc open func appendDatePicker(_ handler: ((UIDatePicker) -> Void)? = nil) -> UIAlertController {
         let viewController = UIViewController()
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         let datePicker = UIDatePicker()
@@ -176,7 +176,7 @@ public extension UIAlertController {
     }
     
     @discardableResult
-    func show(_ viewController: UIViewController?) -> UIAlertController {
+    @objc open func show(_ viewController: UIViewController?) -> UIAlertController {
         if self.preferredStyle == .actionSheet {
             if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
                 if let popoverController = self.popoverPresentationController {
@@ -195,7 +195,7 @@ public extension UIAlertController {
     }
     
     @discardableResult
-    func show() -> UIAlertController {
+    @objc open func show() -> UIAlertController {
         let viewController = UIApplication.shared.currentWindow?.rootViewController
         if self.preferredStyle == .actionSheet {
             if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
@@ -215,7 +215,7 @@ public extension UIAlertController {
     }
     
     @discardableResult
-    func openSetting(_ title: String, handler: (() -> Void)? = nil) -> UIAlertController {
+    @objc open func openSetting(_ title: String, handler: (() -> Void)? = nil) -> UIAlertController {
         self.addAction(UIAlertAction(title: title, style: .default, handler: { (_) in
             handler?()
             guard let bundleIdentifier = Bundle.main.bundleIdentifier else { return }
