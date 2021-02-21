@@ -41,7 +41,7 @@ public extension UITableView {
         label.translatesAutoresizingMaskIntoConstraints = false
         sectionView.addSubview(label)
         sectionView.addConstraints([
-            NSLayoutConstraint(item: sectionView, attribute: .leading, relatedBy: .equal, toItem: label, attribute: .leading, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: sectionView, attribute: .leading, relatedBy: .equal, toItem: label, attribute: .leading, multiplier: 1, constant: -20),
             NSLayoutConstraint(item: sectionView, attribute: .top, relatedBy: .equal, toItem: label, attribute: .top, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: sectionView, attribute: .bottom, relatedBy: .equal, toItem: label, attribute: .bottom, multiplier: 1, constant: 0),
         ])
@@ -60,12 +60,12 @@ public extension UITableView {
         sectionView.addSubview(label)
         sectionView.addSubview(button)
         sectionView.addConstraints([
-            NSLayoutConstraint(item: sectionView, attribute: .leading, relatedBy: .equal, toItem: label, attribute: .leading, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: sectionView, attribute: .leading, relatedBy: .equal, toItem: label, attribute: .leading, multiplier: 1, constant: -20),
             NSLayoutConstraint(item: sectionView, attribute: .top, relatedBy: .equal, toItem: label, attribute: .top, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: sectionView, attribute: .bottom, relatedBy: .equal, toItem: label, attribute: .bottom, multiplier: 1, constant: 0),
         ])
         sectionView.addConstraints([
-            NSLayoutConstraint(item: sectionView, attribute: .trailing, relatedBy: .equal, toItem: label, attribute: .trailing, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: sectionView, attribute: .trailing, relatedBy: .equal, toItem: label, attribute: .trailing, multiplier: 1, constant: -20),
             NSLayoutConstraint(item: sectionView, attribute: .top, relatedBy: .equal, toItem: label, attribute: .top, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: sectionView, attribute: .bottom, relatedBy: .equal, toItem: label, attribute: .bottom, multiplier: 1, constant: 0),
         ])
