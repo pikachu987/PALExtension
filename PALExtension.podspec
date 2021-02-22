@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PALExtension'
-  s.version          = '0.1.18'
+  s.version          = '0.1.19'
   s.summary          = 'PALExtension'
   s.description      = <<-DESC
   This is My lib

@@ -274,7 +274,7 @@ public extension String {
         return links
     }
 
-    func imgURLLink(_ url: URL? = nil, linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default, ext: [String] = ["jpeg", "jpg", "png", "gif", "svg"]) -> [String] {
+    func extURLLink(_ url: URL? = nil, linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default, ext: [String]) -> [String] {
         var reg = "http+\\S?://+\\S+"
         reg.append("(\(ext.compactMap({ "\\.\($0)" }).joined(separator: "|")))")
         var links = [String]()
