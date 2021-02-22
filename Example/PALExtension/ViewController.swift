@@ -119,21 +119,7 @@ class ViewController: UIViewController.Base {
     }
     
     @objc private func testTap(_ sender: UIBarButtonItem) {
-        let urlPath = ""
-        guard let url = URL(string: urlPath) else { return }
-        guard let data = try? Data(contentsOf: url) else { return }
-        guard let html = String(data: data, encoding: .utf8) else { return }
-        let imageUrls = html.imgURLLink(url, linkType: .onlyBody, regex: .default)
-        print(imageUrls.count)
-        imageUrls.forEach { (imagePath) in
-            print("👉\(imagePath)")
-        }
         
-        let imageUrls2 = html.imgTagURLLink(url, linkType: .onlyBody, regex: .default)
-        print(imageUrls2.count)
-        imageUrls2.forEach { (imagePath) in
-            print("👉\(imagePath)")
-        }
     }
 
     private func start(_ filename: String, _ fnName: String) {
