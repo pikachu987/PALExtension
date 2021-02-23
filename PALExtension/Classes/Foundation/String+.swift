@@ -255,13 +255,13 @@ public extension String {
         return links
     }
     
-    func imgTagURLLink(_ url: URL? = nil, linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default) -> [String] {
-        let reg = "<img[^>]*>"
+    func tagURLLink(_ url: URL? = nil, tagName: String = "img", pathQuotes: String = "src", linkType: URLLinkType = .onlyBody, regex: URLLinkRegex = .default) -> [String] {
+        let reg = "<\(tagName)[^>]*>"
         var links = [String]()
         self.htmlTagText(url, linkType: linkType).matches(regex: reg).forEach({
-            var path = $0.components(separatedBy: "src=\"").last?.components(separatedBy: "\"").first ?? ""
-            if path.contains("src=") {
-                path = $0.components(separatedBy: "src='").last?.components(separatedBy: "'").first ?? ""
+            var path = $0.components(separatedBy: "\(pathQuotes)=\"").last?.components(separatedBy: "\"").first ?? ""
+            if path.contains("\(pathQuotes)=") {
+                path = $0.components(separatedBy: "\(pathQuotes)='").last?.components(separatedBy: "'").first ?? ""
             }
             if regex == .overlapUse {
                 links.append(path)
