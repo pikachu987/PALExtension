@@ -55,6 +55,7 @@ extension Notification {
         NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationApplicationWillEnterForeground(_:)), name: UIApplication.willEnterForegroundNotification, object: nil)
         NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationApplicationDidBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.notificationMenuHide(_:)), name: UIMenuController.willHideMenuNotification, object: nil)
+        NotificationCenter.default.addObserver(viewController, selector: #selector(viewController.orientationDidChangeDetect(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     static func removeDefaultNotification(_ viewController: UIViewController) {
@@ -65,6 +66,7 @@ extension Notification {
         NotificationCenter.default.removeObserver(viewController, name: UIApplication.willEnterForegroundNotification, object: nil)
         NotificationCenter.default.removeObserver(viewController, name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.removeObserver(viewController, name: UIMenuController.willHideMenuNotification, object: nil)
+        NotificationCenter.default.removeObserver(viewController, name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 }
 
@@ -94,6 +96,10 @@ extension UIViewController {
     }
     
     @objc func notificationMenuHide(_ notification: Notification) {
+
+    }
+
+    @objc func orientationDidChangeDetect(_ notification: Notification) {
 
     }
 }

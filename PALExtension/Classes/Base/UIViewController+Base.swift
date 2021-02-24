@@ -188,6 +188,10 @@ extension UIViewController {
         open func menuHide(_ notification: Notification) {
             
         }
+        
+        open func orientationDidChange(_ notification: Notification) {
+            
+        }
     }
 }
 
@@ -223,5 +227,9 @@ extension UIViewController.Base {
     
     @objc override func notificationMenuHide(_ notification: Notification) {
         self.menuHide(notification)
+    }
+
+    @objc override func orientationDidChangeDetect(_ notification: Notification) {
+        self.orientationDidChange(notification)
     }
 }
