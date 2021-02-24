@@ -130,6 +130,16 @@ extension UIViewController {
             self.isAppear = false
             self.removeNotification()
         }
+        
+        open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            if #available(iOS 13.0, *) {
+                self.colorModeDidChange()
+            }
+        }
+
+        open func colorModeDidChange() {
+
+        }
 
         open func navigationViewWillDisappear(_ animated: Bool) {
 

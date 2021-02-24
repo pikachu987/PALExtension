@@ -126,6 +126,16 @@ extension UINavigationController {
             }
         }
 
+        open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            if #available(iOS 13.0, *) {
+                self.colorModeDidChange()
+            }
+        }
+
+        open func colorModeDidChange() {
+
+        }
+        
         open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
             return true
         }

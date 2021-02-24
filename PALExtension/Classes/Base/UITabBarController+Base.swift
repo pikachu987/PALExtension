@@ -93,6 +93,16 @@ extension UITabBarController {
             self.removeNotification()
         }
         
+        open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            if #available(iOS 13.0, *) {
+                self.colorModeDidChange()
+            }
+        }
+
+        open func colorModeDidChange() {
+
+        }
+        
         open func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
             return true
         }
