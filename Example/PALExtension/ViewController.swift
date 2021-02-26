@@ -46,10 +46,12 @@ class ViewController: UIViewController.Base {
         return view
     }()
 
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: CGRect(x: 0, y: 400, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 400), style: .plain)
+    private let tableView: UITableView.Base = {
+        let tableView = UITableView.Base(frame: CGRect(x: 0, y: 400, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 400), style: .plain)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         tableView.register(UITableViewCell.bottomIndicatorCell, forCellReuseIdentifier: UITableViewCell.bottomIndicatorCellIdentifier)
+        tableView.isEmptyView = true
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
 
@@ -63,7 +65,19 @@ class ViewController: UIViewController.Base {
         self.view.addSubview(self.tableView)
         self.view.addSubview(self.indicatorButton)
         
+        self.view.addConstraints([
+            NSLayoutConstraint(item: self.view!, attribute: .leading, relatedBy: .equal, toItem: self.tableView, attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.view!, attribute: .trailing, relatedBy: .equal, toItem: self.tableView, attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.view!, attribute: .top, relatedBy: .equal, toItem: self.tableView, attribute: .top, multiplier: 1, constant: -400),
+        ])
+        self.tableView.addConstraints([
+            NSLayoutConstraint(item: self.tableView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: UIScreen.main.bounds.height - 400)
+        ])
+        
         self.dynamicTextView.dynamicDelegate = self
+        
+        self.tableView.emptyView = EmptyView()
+        self.tableView.emptyView?.backgroundColor = .blue
 
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -73,6 +87,11 @@ class ViewController: UIViewController.Base {
         self.test()
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "test", style: .plain, target: self, action: #selector(self.testTap(_:)))
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            self.tableView.contentInset.bottom = 100
+            self.tableView.reloadData()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -604,7 +623,7 @@ extension ViewController: UITableViewDelegate {
 
 extension ViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
