@@ -26,6 +26,7 @@ extension UICollectionView {
         
         open var isEmptyView: Bool = false
         open var isEmptyViewInset: Bool = true
+        open var touchesBeganSuperview: Bool = false
 
         open var emptyView: EmptyView? {
             didSet {
@@ -57,11 +58,14 @@ extension UICollectionView {
             if self.isEmptyView {
                 if self.numberOfSections == 0 {
                     self.emptyView?.isHidden = false
+                    self.emptyView?.isUserInteractionEnabled = true
                 } else {
                     if (0..<self.numberOfSections).compactMap({ self.numberOfItems(inSection: $0) }).reduce(0, +) == 0 {
                         self.emptyView?.isHidden = false
+                        self.emptyView?.isUserInteractionEnabled = true
                     } else {
                         self.emptyView?.isHidden = true
+                        self.emptyView?.isUserInteractionEnabled = false
                     }
                 }
                 if self.isEmptyViewInset {
@@ -73,6 +77,7 @@ extension UICollectionView {
                 }
             } else {
                 self.emptyView?.isHidden = true
+                self.emptyView?.isUserInteractionEnabled = false
                 self.superview?.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
                 self.superview?.constraints(identifierType: .bottom).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
             }
@@ -94,7 +99,9 @@ extension UICollectionView {
         }
         
         open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-            self.superview?.touchesBegan(touches, with: event)
+            if self.touchesBeganSuperview {
+                self.superview?.touchesBegan(touches, with: event)
+            }
         }
 
         public init(adjustedContentInset: UIEdgeInsets = .zero, collectionViewLayout: UICollectionViewLayout) {
