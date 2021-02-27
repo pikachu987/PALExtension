@@ -52,11 +52,11 @@ public extension UIImageView {
         context?.setLineCap(CGLineCap.round)
         if type == .draw {
             context?.setLineWidth(size)
-            context?.setStrokeColor(red: color.red, green: color.green, blue: color.blue, alpha: 1.0)
+            context?.setStrokeColor(red: color.redValue, green: color.greenValue, blue: color.blueValue, alpha: 1.0)
             context?.setBlendMode(.normal)
         } else if type == .clear {
             context?.setLineWidth(size)
-            context?.setStrokeColor(red: UIColor.clear.red, green: UIColor.clear.green, blue: UIColor.clear.blue, alpha: 1.0)
+            context?.setStrokeColor(red: UIColor.clear.redValue, green: UIColor.clear.greenValue, blue: UIColor.clear.blueValue, alpha: 1.0)
             context?.setBlendMode(.clear)
         }
         context?.strokePath()

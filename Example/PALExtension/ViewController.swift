@@ -10,7 +10,7 @@ import UIKit
 import PALExtension
 
 class ViewController: UIViewController.Base {
-    private let array = ActionType.array
+    private var array = [ActionType]()
 
     private let imageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect(x: 10, y: 100, width: 200, height: 200))
@@ -76,20 +76,27 @@ class ViewController: UIViewController.Base {
         
         self.dynamicTextView.dynamicDelegate = self
         
-        self.tableView.emptyView = EmptyView()
-        self.tableView.emptyView?.backgroundColor = .blue
+        self.tableView.emptyView = EmptyTextView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+        
+        self.tableView.emptyView = EmptyImageView().updateImage(UIImage(named: "PinClipart.com_clip-art-sad-face_5532723")?.withRenderingMode(.alwaysTemplate))
 
+        self.tableView.emptyView = EmptyImageTextView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit").updateImage(UIImage(named: "PinClipart.com_clip-art-sad-face_5532723")?.withRenderingMode(.alwaysTemplate))
+        
+        self.tableView.emptyView = EmptyTextButtonView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit").updateButton("This is Tab").updateButtonSize(height: 56)
+        
+        self.tableView.emptyView = EmptyImageTextButtonView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit").updateImage(UIImage(named: "PinClipart.com_clip-art-sad-face_5532723")?.withRenderingMode(.alwaysTemplate)).updateButton("This is Tab").updateButtonSize(height: 56)
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
         self.indicatorButton.addTarget(self, action: #selector(self.indicatorTap(_:)), for: .touchUpInside)
         
-        self.test()
+//        self.test()
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "test", style: .plain, target: self, action: #selector(self.testTap(_:)))
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//            self.tableView.contentInset.bottom = 100
+            self.array = ActionType.array
             self.tableView.reloadData()
         }
     }
@@ -443,19 +450,19 @@ class ViewController: UIViewController.Base {
         self.end()
         
         self.start("UIColor+", "UIColor.blue.red")
-        print(UIColor.blue.red)
+        print(UIColor.blue.redValue)
         self.end()
         
         self.start("UIColor+", "UIColor.blue.green")
-        print(UIColor.blue.green)
+        print(UIColor.blue.greenValue)
         self.end()
         
         self.start("UIColor+", "UIColor.blue.blue")
-        print(UIColor.blue.blue)
+        print(UIColor.blue.blueValue)
         self.end()
         
         self.start("UIColor+", "UIColor.blue.alpha")
-        print(UIColor.blue.alpha)
+        print(UIColor.blue.alphaValue)
         self.end()
         
         self.start("UIColor+", "UIColor.blue.toHexString")
@@ -623,11 +630,11 @@ extension ViewController: UITableViewDelegate {
 
 extension ViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.array.count + 1
+        return self.array.isEmpty ? 0 : self.array.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

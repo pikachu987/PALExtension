@@ -21,6 +21,17 @@
 import UIKit
 
 public extension UIColor {
+    convenience init(hexLight: String, hexDark: String) {
+        self.init(light: UIColor(hexString: hexLight), dark: UIColor(hexString: hexDark))
+    }
+    
+    convenience init(hexLight: Int, hexDark: Int) {
+        self.init(light: UIColor(hex: hexLight), dark: UIColor(hex: hexDark))
+    }
+    
+    convenience init(light: CGFloat, dark: CGFloat) {
+        self.init(light: UIColor(white: light, alpha: 1), dark: UIColor(white: dark, alpha: 1))
+    }
     
     convenience init(light: UIColor, dark: UIColor) {
         if #available(iOS 13.0, *) {
@@ -60,10 +71,10 @@ public extension UIColor {
         )
     }
     
-    var red: CGFloat { return CIColor(color: self).red }
-    var green: CGFloat { return CIColor(color: self).green }
-    var blue: CGFloat { return CIColor(color: self).blue }
-    var alpha: CGFloat { return CIColor(color: self).alpha }
+    var redValue: CGFloat { return CIColor(color: self).red }
+    var greenValue: CGFloat { return CIColor(color: self).green }
+    var blueValue: CGFloat { return CIColor(color: self).blue }
+    var alphaValue: CGFloat { return CIColor(color: self).alpha }
     
     
     var toHexString: String {
@@ -147,7 +158,7 @@ public extension UIColor {
     }
 
     static func hsv(_ color: UIColor) -> HSV {
-        return hsv(red: color.red, green: color.green, blue: color.blue)
+        return hsv(red: color.redValue, green: color.greenValue, blue: color.blueValue)
     }
 }
 

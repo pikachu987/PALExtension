@@ -67,6 +67,7 @@
 		48B9E07318D9138607EE2453C02DE351 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		9DAB5D37505B7C17198B185F13F7DA01 /* Pods-PALExtension_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3302D178A94F6908D785080DBD24C /* Pods-PALExtension_Tests-dummy.m */; };
 		C6FCA44A0E70736204B79809A98011DA /* PALExtension-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECA1F020D4E580D8502E13C75E7E99 /* PALExtension-dummy.m */; };
+		E0A11A3325E9EC3D00EC6DDE /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A11A3225E9EC3C00EC6DDE /* EmptyView.swift */; };
 		FCA1D985E00A3C24CFAA01843FF5E85D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -168,6 +169,7 @@
 		CD89E0D42CEBEFB438160964BB74CE20 /* Pods-PALExtension_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-PALExtension_Tests-umbrella.h"; sourceTree = "<group>"; };
 		D7692992AB003851F5098DF055058725 /* Pods-PALExtension_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PALExtension_Example-dummy.m"; sourceTree = "<group>"; };
 		D937840377A1BBD3F9F8859F531529F7 /* Pods-PALExtension_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PALExtension_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		E0A11A3225E9EC3C00EC6DDE /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		E3BD97CDB6379737F59F42077124D024 /* Pods-PALExtension_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PALExtension_Example.release.xcconfig"; sourceTree = "<group>"; };
 		F78B493F900BCB7DCB54AAC7E5124A7F /* Pods-PALExtension_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-PALExtension_Example-umbrella.h"; sourceTree = "<group>"; };
 		FC66C96E182ADD4A533DB423B9BCF4D9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				1866D20A25B3DCD900921674 /* UIScrollView+Base.swift */,
 				165BB17125DF4A5500FE40FD /* Debounce.swift */,
 				165BB17625DF4A6200FE40FD /* Throttle.swift */,
+				E0A11A3225E9EC3C00EC6DDE /* EmptyView.swift */,
 			);
 			name = Base;
 			path = PALExtension/Classes/Base;
@@ -573,6 +576,7 @@
 				1866D07D25B1CCCA00921674 /* UIDevice+.swift in Sources */,
 				1866D1E225B3D64900921674 /* UIViewController+.swift in Sources */,
 				1866D1E825B3D67300921674 /* UITextView+PlaceholderTextView.swift in Sources */,
+				E0A11A3325E9EC3D00EC6DDE /* EmptyView.swift in Sources */,
 				165BB17225DF4A5500FE40FD /* Debounce.swift in Sources */,
 				1866D1D725B3D64900921674 /* UICollectionView+Base.swift in Sources */,
 				1866D1E325B3D64900921674 /* UIWindow+.swift in Sources */,
@@ -686,7 +690,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.22;
+				MARKETING_VERSION = 0.1.23;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;
@@ -915,7 +919,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MARKETING_VERSION = 0.1.22;
+				MARKETING_VERSION = 0.1.23;
 				MODULEMAP_FILE = "Target Support Files/PALExtension/PALExtension.modulemap";
 				PRODUCT_MODULE_NAME = PALExtension;
 				PRODUCT_NAME = PALExtension;

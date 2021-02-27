@@ -23,11 +23,76 @@ import UIKit
 extension UICollectionView {
     open class Base: UICollectionView {
         open var adjustedContentInsetValue: UIEdgeInsets = .zero
+        
+        open var isEmptyView: Bool = false
+        open var isEmptyViewInset: Bool = true
+
+        open var emptyView: EmptyView? {
+            didSet {
+                oldValue?.removeFromSuperview()
+                if let view = self.emptyView {
+                    self.superview?.insertSubview(view, aboveSubview: self)
+                    self.superview?.addConstraints([
+                        NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
+                        NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
+                        NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).identifier(.top),
+                        NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).identifier(.bottom)
+                    ])
+                }
+                self.reloadEmptyView()
+            }
+        }
 
         open override var adjustedContentInset: UIEdgeInsets {
             return self.adjustedContentInsetValue
         }
 
+        open override var contentInset: UIEdgeInsets {
+            didSet {
+                self.reloadEmptyView()
+            }
+        }
+        
+        open func reloadEmptyView() {
+            if self.isEmptyView {
+                if self.numberOfSections == 0 {
+                    self.emptyView?.isHidden = false
+                } else {
+                    if (0..<self.numberOfSections).compactMap({ self.numberOfItems(inSection: $0) }).reduce(0, +) == 0 {
+                        self.emptyView?.isHidden = false
+                    } else {
+                        self.emptyView?.isHidden = true
+                    }
+                }
+                if self.isEmptyViewInset {
+                    self.superview?.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = -self.contentInset.top
+                    self.superview?.constraints(identifierType: .bottom).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = self.contentInset.bottom
+                } else {
+                    self.superview?.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
+                    self.superview?.constraints(identifierType: .bottom).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
+                }
+            } else {
+                self.emptyView?.isHidden = true
+                self.superview?.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
+                self.superview?.constraints(identifierType: .bottom).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
+            }
+        }
+        
+        open override func reloadData() {
+            super.reloadData()
+            self.reloadEmptyView()
+        }
+
+        open override func reloadSections(_ sections: IndexSet) {
+            super.reloadSections(sections)
+            self.reloadEmptyView()
+        }
+        
+        open override func reloadItems(at indexPaths: [IndexPath]) {
+            super.reloadItems(at: indexPaths)
+            self.reloadEmptyView()
+        }
+        
         open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             self.superview?.touchesBegan(touches, with: event)
         }
