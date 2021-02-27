@@ -54,17 +54,17 @@ open class EmptyTextView: EmptyView {
     }
     
     @discardableResult
-    open func updateText(_ attributedText: NSAttributedString, font: UIFont = .systemFont(ofSize: 17), textColor: UIColor = UIColor(light: 150/255, dark: 200/255), padding: CGFloat = 20) -> EmptyTextView {
+    open func updateText(_ attributedText: NSAttributedString, padding: CGFloat = 20) -> EmptyTextView {
         self.textLabel.attributedText = attributedText
-        self.textLabel.font = font
-        self.textLabel.textColor = textColor
         self.textPadding = padding
         return self
     }
     
     @discardableResult
-    open func updateText(_ text: String, padding: CGFloat = 20) -> EmptyTextView {
+    open func updateText(_ text: String, font: UIFont = .systemFont(ofSize: 17), textColor: UIColor = UIColor(light: 150/255, dark: 200/255), padding: CGFloat = 20) -> EmptyTextView {
         self.textLabel.text = text
+        self.textLabel.font = font
+        self.textLabel.textColor = textColor
         self.textPadding = padding
         return self
     }
@@ -175,17 +175,17 @@ open class EmptyImageTextView: EmptyView {
     }
     
     @discardableResult
-    open func updateText(_ attributedText: NSAttributedString, font: UIFont = .systemFont(ofSize: 17), textColor: UIColor = UIColor(light: 150/255, dark: 200/255), padding: CGFloat = 20) -> EmptyImageTextView {
+    open func updateText(_ attributedText: NSAttributedString, padding: CGFloat = 20) -> EmptyImageTextView {
         self.textLabel.attributedText = attributedText
-        self.textLabel.font = font
-        self.textLabel.textColor = textColor
         self.textPadding = padding
         return self
     }
     
     @discardableResult
-    open func updateText(_ text: String, padding: CGFloat = 20) -> EmptyImageTextView {
+    open func updateText(_ text: String, font: UIFont = .systemFont(ofSize: 17), textColor: UIColor = UIColor(light: 150/255, dark: 200/255), padding: CGFloat = 20) -> EmptyImageTextView {
         self.textLabel.text = text
+        self.textLabel.font = font
+        self.textLabel.textColor = textColor
         self.textPadding = padding
         return self
     }
@@ -238,6 +238,13 @@ open class EmptyImageTextView: EmptyView {
 }
 
 open class EmptyTextButtonView: EmptyView {
+    public let centerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+        return view
+    }()
+
     public let textLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -259,15 +266,15 @@ open class EmptyTextButtonView: EmptyView {
     
     public var textPadding: CGFloat = 20 {
         didSet {
-            self.constraints(identifierType: .leading).filter({ ($0.secondItem as? UIView) == self.textLabel }).first?.constant = -self.textPadding
-            self.constraints(identifierType: .trailing).filter({ ($0.secondItem as? UIView) == self.textLabel }).first?.constant = self.textPadding
+            self.centerView.constraints(identifierType: .leading).filter({ ($0.secondItem as? UIView) == self.textLabel }).first?.constant = -self.textPadding
+            self.centerView.constraints(identifierType: .trailing).filter({ ($0.secondItem as? UIView) == self.textLabel }).first?.constant = self.textPadding
         }
     }
     
     public var buttonPadding: CGFloat = 20 {
         didSet {
-            self.constraints(identifierType: .leading).filter({ ($0.secondItem as? UIView) == self.button }).first?.constant = -self.buttonPadding
-            self.constraints(identifierType: .trailing).filter({ ($0.secondItem as? UIView) == self.button }).first?.constant = self.buttonPadding
+            self.centerView.constraints(identifierType: .leading).filter({ ($0.secondItem as? UIView) == self.button }).first?.constant = -self.buttonPadding
+            self.centerView.constraints(identifierType: .trailing).filter({ ($0.secondItem as? UIView) == self.button }).first?.constant = self.buttonPadding
         }
     }
     
@@ -278,7 +285,7 @@ open class EmptyTextButtonView: EmptyView {
                     constraint.constant = buttonWidth
                 } else {
                     self.button.addConstraints([
-                        NSLayoutConstraint(item: self.button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: buttonWidth)
+                        NSLayoutConstraint(item: self.button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: buttonWidth).identifier(.width)
                     ])
                 }
             } else {
@@ -287,7 +294,7 @@ open class EmptyTextButtonView: EmptyView {
         }
     }
     
-    public var buttonHeight: CGFloat = 48 {
+    public var buttonHeight: CGFloat = 56 {
         didSet {
             self.button.constraints(identifierType: .height).first?.constant = self.buttonHeight
         }
@@ -295,22 +302,22 @@ open class EmptyTextButtonView: EmptyView {
     
     public var buttonBottom: CGFloat = 34 {
         didSet {
-            self.constraints(identifierType: .bottom).first?.constant = self.buttonBottom
+            self.centerView.constraints(identifierType: .bottom).first?.constant = self.buttonBottom
         }
     }
     
     @discardableResult
-    open func updateText(_ attributedText: NSAttributedString, font: UIFont = .systemFont(ofSize: 17), textColor: UIColor = UIColor(light: 150/255, dark: 200/255), padding: CGFloat = 20) -> EmptyTextButtonView {
+    open func updateText(_ attributedText: NSAttributedString, padding: CGFloat = 20) -> EmptyTextButtonView {
         self.textLabel.attributedText = attributedText
-        self.textLabel.font = font
-        self.textLabel.textColor = textColor
         self.textPadding = padding
         return self
     }
     
     @discardableResult
-    open func updateText(_ text: String, padding: CGFloat = 20) -> EmptyTextButtonView {
+    open func updateText(_ text: String, font: UIFont = .systemFont(ofSize: 17), textColor: UIColor = UIColor(light: 150/255, dark: 200/255), padding: CGFloat = 20) -> EmptyTextButtonView {
         self.textLabel.text = text
+        self.textLabel.font = font
+        self.textLabel.textColor = textColor
         self.textPadding = padding
         return self
     }
@@ -331,7 +338,7 @@ open class EmptyTextButtonView: EmptyView {
     }
     
     @discardableResult
-    open func updateButtonSize(width: CGFloat? = nil, height: CGFloat, padding: CGFloat = 20, bottom: CGFloat = 34) -> EmptyTextButtonView {
+    open func updateButtonSize(width: CGFloat? = nil, height: CGFloat = 56, padding: CGFloat = 20, bottom: CGFloat = 34) -> EmptyTextButtonView {
         self.buttonWidth = width
         self.buttonHeight = height
         self.buttonPadding = padding
@@ -341,21 +348,32 @@ open class EmptyTextButtonView: EmptyView {
 
     public override init() {
         super.init()
-
-        self.addSubview(self.textLabel)
-        self.addSubview(self.button)
+        
+        self.addSubview(self.centerView)
+        self.centerView.addSubview(self.textLabel)
+        self.centerView.addSubview(self.button)
         
         self.addConstraints([
-            NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: self.textLabel, attribute: .leading, multiplier: 1, constant: -self.textPadding).priority(950).identifier(.leading),
-            NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.textLabel, attribute: .trailing, multiplier: 1, constant: self.textPadding).priority(951).identifier(.trailing),
-            NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: self.textLabel, attribute: .centerY, multiplier: 1, constant: 0)
+            NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: self.centerView, attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.centerView, attribute: .trailing, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: self.centerView, attribute: .centerY, multiplier: 1, constant: 0)
         ])
         
-        self.addConstraints([
-            NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: self.button, attribute: .bottom, multiplier: 1, constant: self.buttonBottom).identifier(.bottom),
-            NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: self.button, attribute: .centerX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: self.button, attribute: .leading, multiplier: 1, constant: -self.buttonPadding).priority(950).identifier(.leading),
-            NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.button, attribute: .trailing, multiplier: 1, constant: self.buttonPadding).priority(951).identifier(.trailing)
+        self.centerView.addConstraints([
+            NSLayoutConstraint(item: self.centerView, attribute: .top, relatedBy: .equal, toItem: self.textLabel, attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.centerView, attribute: .leading, relatedBy: .equal, toItem: self.textLabel, attribute: .leading, multiplier: 1, constant: -self.textPadding).priority(950).identifier(.leading),
+            NSLayoutConstraint(item: self.centerView, attribute: .trailing, relatedBy: .equal, toItem: self.textLabel, attribute: .trailing, multiplier: 1, constant: self.textPadding).priority(951).identifier(.trailing)
+        ])
+        
+        self.centerView.addConstraints([
+            NSLayoutConstraint(item: self.textLabel, attribute: .bottom, relatedBy: .equal, toItem: self.button, attribute: .top, multiplier: 1, constant: -20)
+        ])
+        
+        self.centerView.addConstraints([
+            NSLayoutConstraint(item: self.centerView, attribute: .centerX, relatedBy: .equal, toItem: self.button, attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.centerView, attribute: .leading, relatedBy: .equal, toItem: self.button, attribute: .leading, multiplier: 1, constant: -self.buttonPadding).priority(950).identifier(.leading),
+            NSLayoutConstraint(item: self.centerView, attribute: .trailing, relatedBy: .equal, toItem: self.button, attribute: .trailing, multiplier: 1, constant: self.buttonPadding).priority(951).identifier(.trailing),
+            NSLayoutConstraint(item: self.centerView, attribute: .bottom, relatedBy: .equal, toItem: self.button, attribute: .bottom, multiplier: 1, constant: self.buttonBottom).identifier(.bottom),
         ])
         
         self.button.addConstraints([
@@ -363,7 +381,7 @@ open class EmptyTextButtonView: EmptyView {
         ])
         if let buttonWidth = self.buttonWidth {
             self.button.addConstraints([
-                NSLayoutConstraint(item: self.button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: buttonWidth)
+                NSLayoutConstraint(item: self.button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: buttonWidth).identifier(.width)
             ])
         }
     }
@@ -411,8 +429,8 @@ open class EmptyImageTextButtonView: EmptyView {
     
     public var textPadding: CGFloat = 20 {
         didSet {
-            self.centerView.constraints(identifierType: .leading).first?.constant = -self.textPadding
-            self.centerView.constraints(identifierType: .trailing).first?.constant = self.textPadding
+            self.centerView.constraints(identifierType: .leading).filter({ ($0.secondItem as? UIView) == self.textLabel }).first?.constant = -self.textPadding
+            self.centerView.constraints(identifierType: .trailing).filter({ ($0.secondItem as? UIView) == self.textLabel }).first?.constant = self.textPadding
         }
     }
     
@@ -425,8 +443,8 @@ open class EmptyImageTextButtonView: EmptyView {
     
     public var buttonPadding: CGFloat = 20 {
         didSet {
-            self.constraints(identifierType: .leading).filter({ ($0.secondItem as? UIView) == self.button }).first?.constant = -self.buttonPadding
-            self.constraints(identifierType: .trailing).filter({ ($0.secondItem as? UIView) == self.button }).first?.constant = self.buttonPadding
+            self.centerView.constraints(identifierType: .leading).filter({ ($0.secondItem as? UIView) == self.button }).first?.constant = -self.buttonPadding
+            self.centerView.constraints(identifierType: .trailing).filter({ ($0.secondItem as? UIView) == self.button }).first?.constant = self.buttonPadding
         }
     }
     
@@ -437,7 +455,7 @@ open class EmptyImageTextButtonView: EmptyView {
                     constraint.constant = buttonWidth
                 } else {
                     self.button.addConstraints([
-                        NSLayoutConstraint(item: self.button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: buttonWidth)
+                        NSLayoutConstraint(item: self.button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: buttonWidth).identifier(.width)
                     ])
                 }
             } else {
@@ -446,7 +464,7 @@ open class EmptyImageTextButtonView: EmptyView {
         }
     }
     
-    public var buttonHeight: CGFloat = 48 {
+    public var buttonHeight: CGFloat = 56 {
         didSet {
             self.button.constraints(identifierType: .height).first?.constant = self.buttonHeight
         }
@@ -454,22 +472,22 @@ open class EmptyImageTextButtonView: EmptyView {
     
     public var buttonBottom: CGFloat = 34 {
         didSet {
-            self.constraints(identifierType: .bottom).first?.constant = self.buttonBottom
+            self.centerView.constraints(identifierType: .bottom).first?.constant = self.buttonBottom
         }
     }
     
     @discardableResult
-    open func updateText(_ attributedText: NSAttributedString, font: UIFont = .systemFont(ofSize: 17), textColor: UIColor = UIColor(light: 150/255, dark: 200/255), padding: CGFloat = 20) -> EmptyImageTextButtonView {
+    open func updateText(_ attributedText: NSAttributedString, padding: CGFloat = 20) -> EmptyImageTextButtonView {
         self.textLabel.attributedText = attributedText
-        self.textLabel.font = font
-        self.textLabel.textColor = textColor
         self.textPadding = padding
         return self
     }
     
     @discardableResult
-    open func updateText(_ text: String, padding: CGFloat = 20) -> EmptyImageTextButtonView {
+    open func updateText(_ text: String, font: UIFont = .systemFont(ofSize: 17), textColor: UIColor = UIColor(light: 150/255, dark: 200/255), padding: CGFloat = 20) -> EmptyImageTextButtonView {
         self.textLabel.text = text
+        self.textLabel.font = font
+        self.textLabel.textColor = textColor
         self.textPadding = padding
         return self
     }
@@ -490,7 +508,7 @@ open class EmptyImageTextButtonView: EmptyView {
         self.button.backgroundColor = backgroundColor
         return self
     }
-
+    
     @discardableResult
     open func updateButton(_ attributedText: NSAttributedString) -> EmptyImageTextButtonView {
         self.button.setAttributedTitle(attributedText, for: .normal)
@@ -498,7 +516,7 @@ open class EmptyImageTextButtonView: EmptyView {
     }
 
     @discardableResult
-    open func updateButtonSize(width: CGFloat? = nil, height: CGFloat, padding: CGFloat = 20, bottom: CGFloat = 34) -> EmptyImageTextButtonView {
+    open func updateButtonSize(width: CGFloat? = nil, height: CGFloat = 56, padding: CGFloat = 20, bottom: CGFloat = 34) -> EmptyImageTextButtonView {
         self.buttonWidth = width
         self.buttonHeight = height
         self.buttonPadding = padding
@@ -512,7 +530,7 @@ open class EmptyImageTextButtonView: EmptyView {
         self.addSubview(self.centerView)
         self.centerView.addSubview(self.imageView)
         self.centerView.addSubview(self.textLabel)
-        self.addSubview(self.button)
+        self.centerView.addSubview(self.button)
 
         self.addConstraints([
             NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: self.centerView, attribute: .leading, multiplier: 1, constant: 0),
@@ -536,23 +554,26 @@ open class EmptyImageTextButtonView: EmptyView {
         
         self.centerView.addConstraints([
             NSLayoutConstraint(item: self.centerView, attribute: .leading, relatedBy: .equal, toItem: self.textLabel, attribute: .leading, multiplier: 1, constant: -self.textPadding).priority(950).identifier(.leading),
-            NSLayoutConstraint(item: self.centerView, attribute: .trailing, relatedBy: .equal, toItem: self.textLabel, attribute: .trailing, multiplier: 1, constant: self.textPadding).priority(951).identifier(.trailing),
-            NSLayoutConstraint(item: self.centerView, attribute: .bottom, relatedBy: .equal, toItem: self.textLabel, attribute: .bottom, multiplier: 1, constant: 0)
+            NSLayoutConstraint(item: self.centerView, attribute: .trailing, relatedBy: .equal, toItem: self.textLabel, attribute: .trailing, multiplier: 1, constant: self.textPadding).priority(951).identifier(.trailing)
+        ])
+        
+        self.centerView.addConstraints([
+            NSLayoutConstraint(item: self.textLabel, attribute: .bottom, relatedBy: .equal, toItem: self.button, attribute: .top, multiplier: 1, constant: -20)
         ])
 
-        self.addConstraints([
-            NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: self.button, attribute: .bottom, multiplier: 1, constant: self.buttonBottom).identifier(.bottom),
-            NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: self.button, attribute: .centerX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: self.button, attribute: .leading, multiplier: 1, constant: -self.buttonPadding).priority(950).identifier(.leading),
-            NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: self.button, attribute: .trailing, multiplier: 1, constant: self.buttonPadding).priority(951).identifier(.trailing)
+        self.centerView.addConstraints([
+            NSLayoutConstraint(item: self.centerView, attribute: .centerX, relatedBy: .equal, toItem: self.button, attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self.centerView, attribute: .leading, relatedBy: .equal, toItem: self.button, attribute: .leading, multiplier: 1, constant: -self.buttonPadding).priority(950).identifier(.leading),
+            NSLayoutConstraint(item: self.centerView, attribute: .trailing, relatedBy: .equal, toItem: self.button, attribute: .trailing, multiplier: 1, constant: self.buttonPadding).priority(951).identifier(.trailing),
+            NSLayoutConstraint(item: self.centerView, attribute: .bottom, relatedBy: .equal, toItem: self.button, attribute: .bottom, multiplier: 1, constant: self.buttonBottom).identifier(.bottom),
         ])
-
+        
         self.button.addConstraints([
             NSLayoutConstraint(item: self.button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: self.buttonHeight)
         ])
         if let buttonWidth = self.buttonWidth {
             self.button.addConstraints([
-                NSLayoutConstraint(item: self.button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: buttonWidth)
+                NSLayoutConstraint(item: self.button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: buttonWidth).identifier(.width)
             ])
         }
     }

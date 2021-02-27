@@ -82,9 +82,12 @@ class ViewController: UIViewController.Base {
 
         self.tableView.emptyView = EmptyImageTextView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit").updateImage(UIImage(named: "PinClipart.com_clip-art-sad-face_5532723")?.withRenderingMode(.alwaysTemplate))
         
-        self.tableView.emptyView = EmptyTextButtonView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit").updateButton("This is Tab").updateButtonSize(height: 56)
+        self.tableView.emptyView = EmptyTextButtonView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit").updateButton("This is Tab", backgroundColor: UIColor(white: 180/255, alpha: 1)).updateButtonSize(width: 120, height: 56)
         
-        self.tableView.emptyView = EmptyImageTextButtonView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit").updateImage(UIImage(named: "PinClipart.com_clip-art-sad-face_5532723")?.withRenderingMode(.alwaysTemplate)).updateButton("This is Tab").updateButtonSize(height: 56)
+        (self.tableView.emptyView as? EmptyTextButtonView)?.updateButtonSize(height: 56)
+        (self.tableView.emptyView as? EmptyTextButtonView)?.updateButtonSize(width: 120, height: 56)
+        
+        self.tableView.emptyView = EmptyImageTextButtonView().updateText("Lorem ipsum dolor sit amet, consectetur adipisicing elit").updateImage(UIImage(named: "PinClipart.com_clip-art-sad-face_5532723")?.withRenderingMode(.alwaysTemplate)).updateButton("This is Tab").updateButtonSize()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -96,7 +99,7 @@ class ViewController: UIViewController.Base {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "test", style: .plain, target: self, action: #selector(self.testTap(_:)))
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.array = ActionType.array
+//            self.array = ActionType.array
             self.tableView.reloadData()
         }
     }
