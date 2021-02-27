@@ -101,6 +101,8 @@ extension UICollectionView {
         open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             if self.touchesBeganSuperview {
                 self.superview?.touchesBegan(touches, with: event)
+            } else {
+                super.touchesBegan(touches, with: event)
             }
         }
 
