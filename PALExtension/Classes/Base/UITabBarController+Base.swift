@@ -20,166 +20,99 @@
 
 import UIKit
 
-extension UITabBarController {
-    // 베이스 탭컨트롤러
-    open class Base: UITabBarController, UITabBarControllerDelegate {
-        private(set) open var isAppear = false
-        private(set) open var isShowKeyboard = false
+extension UITableView {
+    open class Base: UITableView {
+        open var isEmptyView: Bool = false
+        open var isEmptyViewInset: Bool = true
+        open var touchesBeganSuperview: Bool = false
 
-        public var statusBarHidden = false
-        open override var prefersStatusBarHidden: Bool {
-            return self.statusBarHidden
+        open var emptyView: EmptyView? {
+            didSet {
+                oldValue?.removeFromSuperview()
+                self.reloadEmptyView()
+            }
         }
         
-        open override var preferredStatusBarStyle: UIStatusBarStyle {
-            return .default
+        private func ifExistAddEmptyView(animationDuration: TimeInterval) {
+            if let view = self.emptyView {
+                if !self.subviews.contains(view) {
+                    self.addSubview(view)
+                    self.addConstraints([
+                        NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
+                        NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0),
+                        NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).identifier(.top),
+                        NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1, constant: 0).identifier(.height)
+                    ])
+                }
+
+                if self.isEmptyViewInset {
+                    self.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = -self.contentInset.top
+                    self.constraints(identifierType: .height).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = self.contentInset.bottom
+                }
+                
+                if animationDuration == 0 {
+                    self.layoutIfNeeded()
+                } else {
+                    UIView.animate(withDuration: animationDuration) {
+                        self.layoutIfNeeded()
+                    }
+                }
+            }
         }
-
-        open override func viewDidLoad() {
-            super.viewDidLoad()
-
-            self.delegate = self
-            self.view.backgroundColor = UIApplication.shared.currentWindow?.backgroundColor
-            self.tabBar.isTranslucent = false
-            self.initViews()
+        
+        open func reloadEmptyView(animationDuration: TimeInterval = 0.0) {
+            if self.isEmptyView {
+                if self.numberOfSections == 0 {
+                    self.emptyView?.isHidden = false
+                    self.emptyView?.isUserInteractionEnabled = true
+                    self.ifExistAddEmptyView(animationDuration: animationDuration)
+                } else {
+                    if (0..<self.numberOfSections).compactMap({ self.numberOfRows(inSection: $0) }).reduce(0, +) == 0 {
+                        self.emptyView?.isHidden = false
+                        self.emptyView?.isUserInteractionEnabled = true
+                        self.ifExistAddEmptyView(animationDuration: animationDuration)
+                    } else {
+                        self.emptyView?.isHidden = true
+                        self.emptyView?.isUserInteractionEnabled = false
+                    }
+                }
+            } else {
+                self.emptyView?.isHidden = true
+                self.emptyView?.isUserInteractionEnabled = false
+            }
         }
-
-        open func initViews() {
-            
+        
+        open func updateContentInset(_ inset: UIEdgeInsets, notification: Notification) {
+            self.contentInset = inset
+            self.reloadEmptyView(animationDuration: notification.duration)
         }
-
+        
+        open override func reloadData() {
+            super.reloadData()
+            self.reloadEmptyView()
+        }
+        
+        open override func endUpdates() {
+            super.endUpdates()
+            self.reloadEmptyView()
+        }
+        
+        open override func reloadSections(_ sections: IndexSet, with animation: UITableView.RowAnimation) {
+            super.reloadSections(sections, with: animation)
+            self.reloadEmptyView()
+        }
+        
+        open override func reloadRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
+            super.reloadRows(at: indexPaths, with: animation)
+            self.reloadEmptyView()
+        }
+        
         open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-            self.resign()
-        }
-
-        open func resign() {
-            
-        }
-
-        func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, presentStyle: PresentStyle, completion: (() -> Void)? = nil) {
-            viewControllerToPresent.modalPresentationStyle = presentStyle.style
-            super.present(viewControllerToPresent, animated: flag, completion: completion)
-        }
-
-        open override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-            viewControllerToPresent.modalPresentationStyle = .fullScreen
-            super.present(viewControllerToPresent, animated: flag, completion: completion)
-        }
-
-        open override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-            if #available(iOS 13.0, *) {
-                self.isModalInPresentation = true
-            }
-            super.dismiss(animated: flag, completion: completion)
-        }
-
-        open override func viewWillAppear(_ animated: Bool) {
-            super.viewWillAppear(animated)
-            self.isAppear = true
-        }
-
-        open override func viewDidAppear(_ animated: Bool) {
-            super.viewDidAppear(animated)
-
-            self.removeNotification()
-            self.addNotification()
-
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-
-        open override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-            self.isAppear = false
-            self.removeNotification()
-        }
-        
-        open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-            if #available(iOS 13.0, *) {
-                self.colorModeDidChange()
+            if self.touchesBeganSuperview {
+                self.superview?.touchesBegan(touches, with: event)
+            } else {
+                super.touchesBegan(touches, with: event)
             }
         }
-
-        open func colorModeDidChange() {
-
-        }
-        
-        open func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-            return true
-        }
-        
-        // MARK: Observers
-        open func addNotification() {
-            Notification.addDefaultNotification(self)
-        }
-
-        open func removeNotification() {
-            Notification.removeDefaultNotification(self)
-        }
-
-        open func keyboardWillChange(_ notification: Notification, keyboardSize: CGRect, safeAreaSize: CGRect) {
-            
-        }
-        open func keyboardWillShowFrame(_ notification: Notification, keyboardSize: CGRect) {
-            
-        }
-        open func keyboardWillHideFrame(_ notification: Notification, keyboardSize: CGRect) {
-            
-        }
-
-        // 백그라운드1
-        open func willResignActive(_ notification: Notification) {
-            
-        }
-        // 백그라운드2
-        open func didEnterBackground(_ notification: Notification) {
-            
-        }
-        // 포그라운드1
-        open func willEnterForeground(_ notification: Notification) {
-            
-        }
-        // 포그라운드2
-        open func didBecomeActive(_ notification: Notification) {
-            
-        }
-        
-        open func menuHide(_ notification: Notification) {
-            
-        }
-    }
-}
-
-extension UITabBarController.Base {
-    @objc override func notificationKeyboardWillShow(_ notification: Notification) {
-        self.isShowKeyboard = true
-        guard let sizes = notification.keyboardSize(self.view) else { return }
-        self.keyboardWillChange(notification, keyboardSize: sizes.keyboard, safeAreaSize: sizes.safearea)
-        self.keyboardWillShowFrame(notification, keyboardSize: sizes.keyboard)
-    }
-
-    @objc override func notificationKeyboardWillHide(_ notification: Notification) {
-        self.isShowKeyboard = false
-        self.keyboardWillChange(notification, keyboardSize: CGRect.zero, safeAreaSize: CGRect.zero)
-        self.keyboardWillHideFrame(notification, keyboardSize: CGRect.zero)
-    }
-
-    @objc override func notificationApplicationWillResignActive(_ notification: Notification) {
-        self.willResignActive(notification)
-    }
-
-    @objc override func notificationApplicationDidEnterBackground(_ notification: Notification) {
-        self.didEnterBackground(notification)
-    }
-
-    @objc override func notificationApplicationWillEnterForeground(_ notification: Notification) {
-        self.willEnterForeground(notification)
-    }
-
-    @objc override func notificationApplicationDidBecomeActive(_ notification: Notification) {
-        self.didBecomeActive(notification)
-    }
-    
-    @objc override func notificationMenuHide(_ notification: Notification) {
-        self.menuHide(notification)
     }
 }

@@ -31,15 +31,6 @@ extension UICollectionView {
         open var emptyView: EmptyView? {
             didSet {
                 oldValue?.removeFromSuperview()
-                if let view = self.emptyView {
-                    self.superview?.insertSubview(view, aboveSubview: self)
-                    self.superview?.addConstraints([
-                        NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
-                        NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
-                        NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).identifier(.top),
-                        NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0).identifier(.bottom)
-                    ])
-                }
                 self.reloadEmptyView()
             }
         }
@@ -47,40 +38,59 @@ extension UICollectionView {
         open override var adjustedContentInset: UIEdgeInsets {
             return self.adjustedContentInsetValue
         }
+        
+        private func ifExistAddEmptyView(animationDuration: TimeInterval) {
+            if let view = self.emptyView {
+                if !self.subviews.contains(view) {
+                    self.addSubview(view)
+                    self.addConstraints([
+                        NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
+                        NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0),
+                        NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0).identifier(.top),
+                        NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1, constant: 0).identifier(.height)
+                    ])
+                }
 
-        open override var contentInset: UIEdgeInsets {
-            didSet {
-                self.reloadEmptyView()
+                if self.isEmptyViewInset {
+                    self.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = -self.contentInset.top
+                    self.constraints(identifierType: .height).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = self.contentInset.bottom
+                }
+                
+                if animationDuration == 0 {
+                    self.layoutIfNeeded()
+                } else {
+                    UIView.animate(withDuration: animationDuration) {
+                        self.layoutIfNeeded()
+                    }
+                }
             }
         }
         
-        open func reloadEmptyView() {
+        open func reloadEmptyView(animationDuration: TimeInterval = 0.0) {
             if self.isEmptyView {
                 if self.numberOfSections == 0 {
                     self.emptyView?.isHidden = false
                     self.emptyView?.isUserInteractionEnabled = true
+                    self.ifExistAddEmptyView(animationDuration: animationDuration)
                 } else {
                     if (0..<self.numberOfSections).compactMap({ self.numberOfItems(inSection: $0) }).reduce(0, +) == 0 {
                         self.emptyView?.isHidden = false
                         self.emptyView?.isUserInteractionEnabled = true
+                        self.ifExistAddEmptyView(animationDuration: animationDuration)
                     } else {
                         self.emptyView?.isHidden = true
                         self.emptyView?.isUserInteractionEnabled = false
                     }
                 }
-                if self.isEmptyViewInset {
-                    self.superview?.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = -self.contentInset.top
-                    self.superview?.constraints(identifierType: .bottom).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = self.contentInset.bottom
-                } else {
-                    self.superview?.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
-                    self.superview?.constraints(identifierType: .bottom).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
-                }
             } else {
                 self.emptyView?.isHidden = true
                 self.emptyView?.isUserInteractionEnabled = false
-                self.superview?.constraints(identifierType: .top).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
-                self.superview?.constraints(identifierType: .bottom).filter({ ($0.firstItem as? UIView) == self && ($0.secondItem as? UIView) == self.emptyView }).first?.constant = 0
             }
+        }
+        
+        open func updateContentInset(_ inset: UIEdgeInsets, notification: Notification) {
+            self.contentInset = inset
+            self.reloadEmptyView(animationDuration: notification.duration)
         }
         
         open override func reloadData() {

@@ -222,7 +222,7 @@ open class EmptyImageTextView: EmptyView {
         ])
         
         self.centerView.addConstraints([
-            NSLayoutConstraint(item: self.imageView, attribute: .bottom, relatedBy: .equal, toItem: self.textLabel, attribute: .top, multiplier: 1, constant: -20)
+            NSLayoutConstraint(item: self.imageView, attribute: .bottom, relatedBy: .equal, toItem: self.textLabel, attribute: .top, multiplier: 1, constant: -40)
         ])
         
         self.centerView.addConstraints([
@@ -549,7 +549,7 @@ open class EmptyImageTextButtonView: EmptyView {
         ])
         
         self.centerView.addConstraints([
-            NSLayoutConstraint(item: self.imageView, attribute: .bottom, relatedBy: .equal, toItem: self.textLabel, attribute: .top, multiplier: 1, constant: -20)
+            NSLayoutConstraint(item: self.imageView, attribute: .bottom, relatedBy: .equal, toItem: self.textLabel, attribute: .top, multiplier: 1, constant: -40)
         ])
         
         self.centerView.addConstraints([
