@@ -65,9 +65,9 @@ public extension UITableView {
             NSLayoutConstraint(item: sectionView, attribute: .bottom, relatedBy: .equal, toItem: label, attribute: .bottom, multiplier: 1, constant: 0),
         ])
         sectionView.addConstraints([
-            NSLayoutConstraint(item: sectionView, attribute: .trailing, relatedBy: .equal, toItem: label, attribute: .trailing, multiplier: 1, constant: -20),
-            NSLayoutConstraint(item: sectionView, attribute: .top, relatedBy: .equal, toItem: label, attribute: .top, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: sectionView, attribute: .bottom, relatedBy: .equal, toItem: label, attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: sectionView, attribute: .trailing, relatedBy: .equal, toItem: button, attribute: .trailing, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: sectionView, attribute: .top, relatedBy: .equal, toItem: button, attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: sectionView, attribute: .bottom, relatedBy: .equal, toItem: button, attribute: .bottom, multiplier: 1, constant: 0),
         ])
         label.text = text
         label.font = .systemFont(ofSize: 15)
