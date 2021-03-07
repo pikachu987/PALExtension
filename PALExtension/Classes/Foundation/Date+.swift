@@ -20,8 +20,8 @@
 
 import Foundation
 
-public typealias DateTuple = (year: String, month: String, day: String, hour: String, minute: String, second: String)
-public typealias DateTupleInt = (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?, second: Int?)
+public typealias DateTuple = (year: String, month: String, day: String, hour: String, minute: String, second: String, week: Int)
+public typealias DateTupleInt = (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?, second: Int?, week: Int)
 
 public extension Date {
     
@@ -47,7 +47,8 @@ public extension Date {
         let hour = (calendar as NSCalendar).components(.hour, from: self).hour ?? 12
         let minute = (calendar as NSCalendar).components(.minute, from: self).minute ?? 0
         let second = (calendar as NSCalendar).components(.second, from: self).second ?? 0
-        
+        let week = ((calendar as NSCalendar).components(.weekday, from: self).weekday ?? 1) - 1
+
         let yearString = "\(year)"
         let monthString = month < 10 ? "0\(month)" : "\(month)"
         let dayString = day < 10 ? "0\(day)" : "\(day)"
@@ -55,7 +56,7 @@ public extension Date {
         let minuteString = minute < 10 ? "0\(minute)" : "\(minute)"
         let secondString = second < 10 ? "0\(second)" : "\(second)"
         
-        return DateTuple(yearString, monthString, dayString, hourString, minuteString, secondString)
+        return DateTuple(yearString, monthString, dayString, hourString, minuteString, secondString, week)
     }
     
     var dateTupleInt: DateTupleInt {
@@ -67,8 +68,9 @@ public extension Date {
         let hour = (calendar as NSCalendar).components(.hour, from: self).hour
         let minute = (calendar as NSCalendar).components(.minute, from: self).minute
         let second = (calendar as NSCalendar).components(.second, from: self).second
+        let week = ((calendar as NSCalendar).components(.weekday, from: self).weekday ?? 1) - 1
         
-        return DateTupleInt(year, month, day, hour, minute, second)
+        return DateTupleInt(year, month, day, hour, minute, second, week)
     }
     
     var timeZoneDate: Date {
