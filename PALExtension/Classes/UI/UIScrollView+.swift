@@ -108,4 +108,38 @@ public extension UIScrollView {
             }
         }
     }
+    
+    func scrollViewDidZoom(_ view: UIView, height: CGFloat) {
+        if self.zoomScale <= 1 {
+            let offsetX = max((self.bounds.width - self.contentSize.width) * 0.5, 0)
+            let offsetY = max((self.bounds.height - self.contentSize.height) * 0.5, 0)
+            self.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: 0, right: 0)
+        } else {
+            let imageSize = view.frame
+
+            let viewHeight = height
+            let viewWidth = UIScreen.main.bounds.width
+
+            let widthRate =  viewWidth / imageSize.width
+            let heightRate = viewHeight / imageSize.height
+
+            if widthRate < heightRate {
+                let imageOffset = -imageSize.origin.y
+                let scrollOffset = (self.bounds.height - self.contentSize.height) * 0.5
+                if imageOffset > scrollOffset {
+                    self.contentInset = UIEdgeInsets(top: imageOffset, left: 0, bottom: imageOffset, right: 0)
+                } else {
+                    self.contentInset = UIEdgeInsets(top: scrollOffset, left: 0, bottom: scrollOffset, right: 0)
+                }
+            } else {
+                let imageOffset = -imageSize.origin.x
+                let scrollOffset = (self.bounds.width - self.contentSize.width) * 0.5
+                if imageOffset > scrollOffset {
+                    self.contentInset = UIEdgeInsets(top: 0, left: imageOffset, bottom: 0, right: imageOffset)
+                } else {
+                    self.contentInset = UIEdgeInsets(top: 0, left: scrollOffset, bottom: 0, right: scrollOffset)
+                }
+            }
+        }
+    }
 }
