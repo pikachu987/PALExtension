@@ -177,6 +177,14 @@ extension UIAlertController {
     
     @discardableResult
     @objc open func show(_ viewController: UIViewController?) -> UIAlertController {
+        if let viewController = viewController {
+            self.show(viewController, sourceRect: CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0))
+        }
+        return self
+    }
+    
+    @discardableResult
+    @objc open func show(_ viewController: UIViewController?, sourceRect: CGRect) -> UIAlertController {
         if self.preferredStyle == .actionSheet {
             if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
                 if let popoverController = self.popoverPresentationController {
@@ -185,7 +193,7 @@ extension UIAlertController {
                             popoverController.sourceView = viewController.view
                         }
                         if popoverController.sourceRect.width == 0 || popoverController.sourceRect.height == 0 {
-                            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0)
+                            popoverController.sourceRect = sourceRect
                         }
                     }
                     popoverController.permittedArrowDirections = []
@@ -201,23 +209,14 @@ extension UIAlertController {
     @discardableResult
     @objc open func show() -> UIAlertController {
         let viewController = UIApplication.shared.currentWindow?.rootViewController
-        if self.preferredStyle == .actionSheet {
-            if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
-                if let popoverController = self.popoverPresentationController {
-                    if let viewController = viewController {
-                        if popoverController.sourceView == nil {
-                            popoverController.sourceView = viewController.view
-                        }
-                        if popoverController.sourceRect.width == 0 || popoverController.sourceRect.height == 0 {
-                            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0)
-                        }
-                    }
-                    popoverController.permittedArrowDirections = []
-                }
-            }
-        }
-        DispatchQueue.main.async {
-            viewController?.present(self, animated: true, completion: nil)
+        self.show(viewController)
+        return self
+    }
+    
+    @discardableResult
+    @objc open func show(sourceRect: CGRect) -> UIAlertController {
+        if let viewController = UIApplication.shared.currentWindow?.rootViewController {
+            self.show(viewController, sourceRect: CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0))
         }
         return self
     }
