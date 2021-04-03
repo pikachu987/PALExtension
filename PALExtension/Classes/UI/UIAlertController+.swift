@@ -181,8 +181,12 @@ extension UIAlertController {
             if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
                 if let popoverController = self.popoverPresentationController {
                     if let viewController = viewController {
-                        popoverController.sourceView = viewController.view
-                        popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0)
+                        if popoverController.sourceView == nil {
+                            popoverController.sourceView = viewController.view
+                        }
+                        if popoverController.sourceRect.width == 0 || popoverController.sourceRect.height == 0 {
+                            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0)
+                        }
                     }
                     popoverController.permittedArrowDirections = []
                 }
@@ -201,8 +205,12 @@ extension UIAlertController {
             if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
                 if let popoverController = self.popoverPresentationController {
                     if let viewController = viewController {
-                        popoverController.sourceView = viewController.view
-                        popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0)
+                        if popoverController.sourceView == nil {
+                            popoverController.sourceView = viewController.view
+                        }
+                        if popoverController.sourceRect.width == 0 || popoverController.sourceRect.height == 0 {
+                            popoverController.sourceRect = CGRect(x: viewController.view.bounds.midX, y: viewController.view.bounds.height - 20, width: 0, height: 0)
+                        }
                     }
                     popoverController.permittedArrowDirections = []
                 }
