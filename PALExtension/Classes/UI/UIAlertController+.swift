@@ -186,13 +186,13 @@ extension UIAlertController {
     @discardableResult
     @objc open func show(_ viewController: UIViewController?, sourceRect: CGRect) -> UIAlertController {
         if self.preferredStyle == .actionSheet {
-            if UIDevice.deviceType == .iPad || UIDevice.deviceSimulatorType == .iPad {
+            if UIDevice.current.userInterfaceIdiom == .pad {
                 if let popoverController = self.popoverPresentationController {
                     if let viewController = viewController {
                         if popoverController.sourceView == nil {
                             popoverController.sourceView = viewController.view
                         }
-                        if popoverController.sourceRect.width == 0 || popoverController.sourceRect.height == 0 {
+                        if popoverController.sourceRect.origin.x == CGFloat.infinity || popoverController.sourceRect.origin.y == CGFloat.infinity {
                             popoverController.sourceRect = sourceRect
                         }
                     }
