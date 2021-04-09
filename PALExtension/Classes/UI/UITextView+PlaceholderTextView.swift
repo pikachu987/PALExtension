@@ -143,11 +143,12 @@ extension UITextView {
                 placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
                 
                 self.addSubview(placeholderLabel)
+
                 self.addConstraints([
-                    NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: placeholderLabel, attribute: .leading, multiplier: 1, constant: -labelX),
-                    NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: placeholderLabel, attribute: .top, multiplier: 1, constant: -labelY),
-                    NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .greaterThanOrEqual, toItem: placeholderLabel, attribute: .centerX, multiplier: 1, constant: 0),
-                    NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .greaterThanOrEqual, toItem: placeholderLabel, attribute: .bottom, multiplier: 1, constant: 0)
+                    NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: placeholderLabel, attribute: .leading, multiplier: 1, constant: -labelX).identifier("leading"),
+                    NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: placeholderLabel, attribute: .top, multiplier: 1, constant: -labelY).identifier("top"),
+                    NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .greaterThanOrEqual, toItem: placeholderLabel, attribute: .centerX, multiplier: 1, constant: 0).identifier("centerX"),
+                    NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .greaterThanOrEqual, toItem: placeholderLabel, attribute: .bottom, multiplier: 1, constant: 0).identifier("bottom")
                 ])
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(self.textDidChange), name: UITextView.textDidChangeNotification, object: self)
