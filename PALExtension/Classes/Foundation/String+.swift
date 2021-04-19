@@ -260,14 +260,16 @@ public extension String {
         var links = [String]()
         self.htmlTagText(url, linkType: linkType).matches(regex: reg).forEach({
             var path = $0.components(separatedBy: "\(pathQuotes)=\"").last?.components(separatedBy: "\"").first ?? ""
-            if path.contains("\(pathQuotes)=") {
+            if !path.hasPrefix("http") && !path.hasPrefix("data:") {
                 path = $0.components(separatedBy: "\(pathQuotes)='").last?.components(separatedBy: "'").first ?? ""
             }
-            if regex == .overlapUse {
-                links.append(path)
-            } else {
-                if !links.contains(path) {
+            if path.hasPrefix("http") || path.hasPrefix("data:") {
+                if regex == .overlapUse {
                     links.append(path)
+                } else {
+                    if !links.contains(path) {
+                        links.append(path)
+                    }
                 }
             }
         })
